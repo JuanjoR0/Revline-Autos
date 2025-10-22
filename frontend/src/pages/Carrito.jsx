@@ -1,0 +1,49 @@
+import "../styles/carrito.css";
+import { useCarrito } from "../context/CarritoContext";
+
+export default function Carrito() {
+  const { carrito, cambiarCantidad, eliminarProducto, vaciarCarrito } = useCarrito();
+
+  const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+
+  return (
+    <div className="carrito-contenedor">
+      <h1>Mi carrito &gt;</h1>
+
+      {carrito.length === 0 ? (
+        <p className="carrito-vacio">¡Tu carrito está vacío. Añade productos desde la tienda!</p>
+      ) : (
+        <>
+          <div className="carrito-lista">
+            {carrito.map((p) => (
+              <div className="carrito-item" key={p.id}>
+                <img src={p.imagen} alt={p.nombre} className="carrito-img" />
+                <div className="carrito-detalles">
+                  <h3>{p.marca} {p.nombre}</h3>
+                  <p className="precio-unitario">${p.precio.toLocaleString()}</p>
+                </div>
+
+                <div className="carrito-cantidad">
+                  <button onClick={() => cambiarCantidad(p.id, -1)}>−</button>
+                  <span>{p.cantidad}</span>
+                  <button onClick={() => cambiarCantidad(p.id, 1)}>+</button>
+                </div>
+
+                <div className="carrito-subtotal">
+                  ${(p.precio * p.cantidad).toLocaleString()}
+                </div>
+
+                <button className="btn-eliminar" onClick={() => eliminarProducto(p.id)}>✕</button>
+              </div>
+            ))}
+          </div>
+
+          <div className="carrito-resumen">
+            <p className="total">Total: $<strong>{total.toLocaleString()}</strong></p>
+            <button className="btn-comprar">Realizar compra</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

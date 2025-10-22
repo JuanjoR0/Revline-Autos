@@ -1,0 +1,379 @@
+
+REVLINE AUTOS — GUÍA COMPLETA (Django + React en un único despliegue en Render)
+Autor: Juan José Rodríguez Ortega
+Año: 2025
+
+──────────────────────────────────────────────────────────────────────────────
+0) REQUISITOS PREVIOS
+──────────────────────────────────────────────────────────────────────────────
+- Python 3.10+
+- Node.js 18+ y npm
+- Git y GitHub
+- VS Code
+- Cuenta en Render (plan gratuito)
+
+Estructura final del repo (monorepo):
+RevLineAutos/
+├─ backend/                ← Proyecto Django
+│  ├─ backend/             ← settings.py, urls.py, wsgi.py
+│  ├─ shop/                ← app principal
+│  ├─ manage.py
+│  └─ frontend_dist/       ← (se generará en el build con la SPA de React)
+├─ frontend/               ← Proyecto React (Vite)
+├─ docs/                   ← Documentación (Word/PDF)
+├─ requirements.txt
+└─ README.md
+
+──────────────────────────────────────────────────────────────────────────────
+1) CREACIÓN DEL PROYECTO (TERMINAL)
+──────────────────────────────────────────────────────────────────────────────
+mkdir RevLineAutos && cd RevLineAutos
+mkdir backend frontend docs
+python -m venv venv
+# Activar entorno
+#  Windows: venv\Scripts\activate
+#  macOS/Linux: source venv/bin/activate
+pip install django djangorestframework djangorestframework-simplejwt django-cors-headers dj-database-url psycopg2-binary pillow gunicorn whitenoise
+pip freeze > requirements.txt
+
+# Crear Django
+cd backend
+django-admin startproject backend .
+python manage.py startapp shop
+
+# Migraciones iniciales + superusuario (después de configurar settings)
+# python manage.py makemigrations
+# python manage.py migrate
+# python manage.py createsuperuser
+
+──────────────────────────────────────────────────────────────────────────────
+2) CONFIGURACIÓN DJANGO (backend/backend/settings.py)
+──────────────────────────────────────────────────────────────────────────────
+INSTALLED_APPS = [
+  'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
+  'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
+  'rest_framework','corsheaders','shop',
+]
+
+MIDDLEWARE = [
+  'corsheaders.middleware.CorsMiddleware',
+  'django.middleware.security.SecurityMiddleware',
+  'whitenoise.middleware.WhiteNoiseMiddleware',
+  'django.contrib.sessions.middleware.SessionMiddleware',
+  'django.middleware.common.CommonMiddleware',
+  'django.middleware.csrf.CsrfViewMiddleware',
+  'django.contrib.auth.middleware.AuthenticationMiddleware',
+  'django.contrib.messages.middleware.MessageMiddleware',
+  'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+  'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',)
+}
+
+# En local puedes permitir el puerto de Vite si lo usas para desarrollo
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+
+# BD local (SQLite) + producción (Render) con dj-database-url
+import dj_database_url, os
+DATABASES = { 'default': dj_database_url.config(default='sqlite:///db.sqlite3') }
+
+# Archivos estáticos y media
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Donde copiaremos el build de React (ver paso 5)
+# Django servirá el index.html y los assets desde aquí en producción
+TEMPLATES[0]['DIRS'] = [ BASE_DIR / 'frontend_dist' ]
+STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist', ]
+
+# Seguridad para producción (Render)
+# ALLOWED_HOSTS = ['.onrender.com']  (se define por env en Render)
+# CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
+──────────────────────────────────────────────────────────────────────────────
+3) URLS DJANGO (backend/backend/urls.py)
+──────────────────────────────────────────────────────────────────────────────
+from django.contrib import admin
+from django.urls import path, include, re_path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
+urlpatterns = [
+  path('admin/', admin.site.urls),
+  path('api/', include('shop.urls')),
+]
+
+# Ruta catch-all: sirve la SPA (index.html) para cualquier otra URL
+urlpatterns += [
+  re_path(r'^(?!api/).*$', TemplateView.as_view(template_name='index.html')),
+]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+──────────────────────────────────────────────────────────────────────────────
+4) APP SHOP: MODELOS (backend/shop/models.py)
+──────────────────────────────────────────────────────────────────────────────
+from django.db import models
+from django.contrib.auth.models import User
+
+class Vehicle(models.Model):
+  TYPE_CHOICES = [('car','Coche'),('bike','Moto'),('special','Especial')]
+  name = models.CharField(max_length=120)
+  brand = models.CharField(max_length=120)
+  type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+  price = models.DecimalField(max_digits=10, decimal_places=2)
+  stock = models.PositiveIntegerField(default=0)
+  speed = models.DecimalField(max_digits=5, decimal_places=2)
+  braking = models.DecimalField(max_digits=5, decimal_places=2)
+  acceleration = models.DecimalField(max_digits=5, decimal_places=2)
+  traction = models.DecimalField(max_digits=5, decimal_places=2)
+  image = models.ImageField(upload_to="vehicles/", blank=True, null=True)
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self): return self.name
+
+class Order(models.Model):
+  STATUS_CHOICES = [('PENDING','Pendiente'),('PAID','Pagado'),('CANCELLED','Cancelado')]
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  address = models.CharField(max_length=255)
+  postal_code = models.CharField(max_length=20)
+  province = models.CharField(max_length=120)
+  status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+  paid = models.BooleanField(default=False)
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self): return f"Pedido #{self.id} - {self.user.username}"
+
+class OrderItem(models.Model):
+  order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+  vehicle = models.ForeignKey(Vehicle, on_delete=models.PROTECT)
+  unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+  quantity = models.PositiveIntegerField(default=1)
+
+  def __str__(self): return f"{self.vehicle.name} x{self.quantity}"
+
+──────────────────────────────────────────────────────────────────────────────
+5) SERIALIZERS Y VIEWS (backend/shop/serializers.py & views.py)
+──────────────────────────────────────────────────────────────────────────────
+# serializers.py
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import Vehicle, Order, OrderItem
+
+class RegisterSerializer(serializers.ModelSerializer):
+  class Meta: model = User; fields = ['id','username','email','password']; extra_kwargs={'password':{'write_only':True}}
+  def create(self, data): return User.objects.create_user(**data)
+
+class VehicleSerializer(serializers.ModelSerializer):
+  class Meta: model = Vehicle; fields = '__all__'
+
+class OrderItemWriteSerializer(serializers.ModelSerializer):
+  class Meta: model = OrderItem; fields = ['vehicle','unit_price','quantity']
+
+class OrderItemReadSerializer(serializers.ModelSerializer):
+  vehicle = VehicleSerializer()
+  class Meta: model = OrderItem; fields = ['id','vehicle','unit_price','quantity']
+
+class OrderSerializer(serializers.ModelSerializer):
+  items = OrderItemReadSerializer(many=True, read_only=True)
+  class Meta: model = Order; fields = ['id','user','address','postal_code','province','status','paid','created_at','items']
+  read_only_fields = ['user','status','paid','created_at']
+
+# views.py
+from rest_framework import viewsets, generics, permissions, status
+from rest_framework.response import Response
+from .models import Vehicle, Order, OrderItem
+from .serializers import VehicleSerializer, OrderSerializer, RegisterSerializer, OrderItemWriteSerializer
+
+class VehicleViewSet(viewsets.ModelViewSet):
+  queryset = Vehicle.objects.all().order_by('-created_at')
+  serializer_class = VehicleSerializer
+  permission_classes = [permissions.AllowAny]  # proteger POST/PUT/DELETE con IsAdminUser en producción
+  def get_permissions(self):
+    if self.action in ['create','update','partial_update','destroy']:
+      return [permissions.IsAdminUser()]
+    return super().get_permissions()
+
+class OrderViewSet(viewsets.ModelViewSet):
+  serializer_class = OrderSerializer
+  permission_classes = [permissions.IsAuthenticated]
+  def get_queryset(self):
+    u = self.request.user
+    return Order.objects.all() if u.is_staff else Order.objects.filter(user=u)
+  def create(self, request, *args, **kwargs):
+    order = Order.objects.create(
+      user=request.user,
+      address=request.data.get('address',''),
+      postal_code=request.data.get('postal_code',''),
+      province=request.data.get('province','')
+    )
+    items = request.data.get('items', [])
+    for it in items:
+      OrderItem.objects.create(order=order, **it)
+    return Response(self.get_serializer(order).data, status=status.HTTP_201_CREATED)
+
+class RegisterView(generics.CreateAPIView):
+  serializer_class = RegisterSerializer
+  permission_classes = [permissions.AllowAny]
+
+──────────────────────────────────────────────────────────────────────────────
+6) ROUTER/URLS DE LA APP (backend/shop/urls.py)
+──────────────────────────────────────────────────────────────────────────────
+from django.urls import path, include
+from rest_framework import routers
+from .views import VehicleViewSet, OrderViewSet, RegisterView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+router = routers.DefaultRouter()
+router.register(r'vehicles', VehicleViewSet, basename='vehicles')
+router.register(r'orders', OrderViewSet, basename='orders')
+
+urlpatterns = [
+  path('', include(router.urls)),
+  path('auth/register/', RegisterView.as_view()),
+  path('auth/token/', TokenObtainPairView.as_view()),
+  path('auth/token/refresh/', TokenRefreshView.as_view()),
+]
+
+──────────────────────────────────────────────────────────────────────────────
+7) ADMIN DJANGO (backend/shop/admin.py)
+──────────────────────────────────────────────────────────────────────────────
+from django.contrib import admin
+from .models import Vehicle, Order, OrderItem
+class OrderItemInline(admin.TabularInline):
+  model = OrderItem; extra = 0
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+  inlines = [OrderItemInline]
+admin.site.register(Vehicle)
+
+──────────────────────────────────────────────────────────────────────────────
+8) MIGRACIONES Y PRUEBAS EN LOCAL
+──────────────────────────────────────────────────────────────────────────────
+cd backend
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+Probar:
+- /admin/
+- /api/vehicles/
+- /api/auth/register/  +  /api/auth/token/
+
+──────────────────────────────────────────────────────────────────────────────
+9) FRONTEND REACT (Vite) — DESARROLLO
+──────────────────────────────────────────────────────────────────────────────
+cd ../frontend
+npm create vite@latest . -- --template react
+npm install
+npm install axios react-router-dom
+
+# src/api/axios.js
+import axios from 'axios';
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/',
+});
+
+# Añade páginas: Home, Shop, Filters (coches/motos/especiales), VehicleDetail, Cart, Orders, Login, Register, Contact, Blog.
+# En desarrollo puedes ejecutar:
+npm run dev
+# (si usas Vite local, mantén CORS_ALLOWED_ORIGINS con http://localhost:5173)
+
+──────────────────────────────────────────────────────────────────────────────
+10) BUILD DEL FRONTEND E INTEGRACIÓN EN DJANGO
+──────────────────────────────────────────────────────────────────────────────
+# Generar build de React
+cd frontend
+npm run build   # crea carpeta dist/
+
+# Copiar/actualizar el build dentro de Django
+# (en CI/Render lo haremos automáticamente; en local para probar:)
+rm -rf ../backend/frontend_dist
+cp -R dist ../backend/frontend_dist
+
+# Ahora Django sirve el index.html y assets desde backend/frontend_dist
+# Prueba de nuevo:
+cd ../backend
+python manage.py runserver
+# Visita: http://127.0.0.1:8000  (debería cargar la SPA)
+
+──────────────────────────────────────────────────────────────────────────────
+11) PREPARAR REPO GITHUB
+──────────────────────────────────────────────────────────────────────────────
+# En la raíz del monorepo (LosSantosMotors/)
+echo "venv/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "backend/db.sqlite3" >> .gitignore
+echo "backend/media/" >> .gitignore
+echo "node_modules/" >> .gitignore
+git init
+git add .
+git commit -m "PFM: base Django+React monorepo"
+git branch -M main
+git remote add origin <URL-de-tu-repo>
+git push -u origin main
+
+──────────────────────────────────────────────────────────────────────────────
+12) DESPLIEGUE ÚNICO EN RENDER (DJANGO + REACT)
+──────────────────────────────────────────────────────────────────────────────
+1. Crea en Render:
+   - Un servicio de Base de Datos PostgreSQL → copia DATABASE_URL.
+   - Un Web Service desde tu repo (raíz del monorepo).
+2. Variables de entorno (Environment):
+   DATABASE_URL=postgres://...
+   SECRET_KEY=<tu_clave_segura>
+   DEBUG=False
+   ALLOWED_HOSTS=.onrender.com
+3. Build Command (en el Web Service):
+   pip install -r requirements.txt && \
+   npm --prefix frontend ci || npm --prefix frontend install && \
+   npm --prefix frontend run build && \
+   rm -rf backend/frontend_dist && cp -R frontend/dist backend/frontend_dist && \
+   python backend/manage.py collectstatic --noinput && \
+   python backend/manage.py migrate
+4. Start Command:
+   gunicorn backend.backend.wsgi:application
+   # Nota: el módulo wsgi apunta a backend/backend/wsgi.py
+5. Tras el primer despliegue, crea superusuario (Jobs o Shell):
+   python backend/manage.py createsuperuser
+
+Listo ✅ Una sola URL en Render servirá la SPA y la API.
+
+──────────────────────────────────────────────────────────────────────────────
+13) POST-DESPLIEGUE (CHECKLIST)
+──────────────────────────────────────────────────────────────────────────────
+- Probar /admin/ (login como superusuario).
+- Probar /api/vehicles/ y /api/auth/token/.
+- Navegar la SPA en la raíz “/” (debe verse el frontend).
+- Crear algunos vehículos desde admin y verificar que aparecen en la tienda.
+- Registrar un usuario normal y realizar un pedido de prueba.
+
+──────────────────────────────────────────────────────────────────────────────
+14) ENTREGABLES PFM
+──────────────────────────────────────────────────────────────────────────────
+- Repo GitHub público con README (instrucciones, tecnologías, entorno, enlaces).
+- Documento (Word/PDF) en /docs con capturas.
+- Aplicación desplegada en Render (URL pública).
+- Vídeo explicativo (≤ 5 min) mostrando:
+  * Inicio, Tienda (filtros y cards), Detalle
+  * Login/Registro, Carrito y Compra (pedido)
+  * Panel de administración (CRUD, cambio de estado)
+  * Tecnologías y despliegue
+
+──────────────────────────────────────────────────────────────────────────────
+NOTAS
+──────────────────────────────────────────────────────────────────────────────
+- En producción (mismo dominio) no necesitas CORS para la SPA.
+- Si desarrollas el frontend con Vite en local, activa CORS para http://localhost:5173.
+- Usa IsAdminUser para proteger POST/PUT/DELETE de vehículos.
+- Añade paginación y búsqueda en VehicleViewSet si lo deseas (DRF LimitOffsetPagination / filtros).
+- No subas db.sqlite3 al repo. Usa migraciones para crear tablas en Postgres.

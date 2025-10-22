@@ -1,0 +1,156 @@
+/* Fondo oscuro detrás del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Caja del modal */
+.modal-content {
+  background: #111;
+  border: 1px solid #c1121f;
+  border-radius: 12px;
+  padding: 2rem;
+  color: #fff;
+  width: 380px;
+  max-width: 90%;
+  box-shadow: 0 0 30px rgba(193, 18, 31, 0.5);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Botón de cierre */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.modal-close:hover {
+  color: #c1121f;
+}
+
+/* Animación suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.form-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.form-auth input {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #222;
+  color: #fff;
+}
+
+.form-auth button {
+  background: #c1121f;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.form-auth button:hover {
+  background: #a50e19;
+}
+.mensaje-error {
+  color: #ff4444;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+
+
+
+/* accion añadir al carrito  */
+/* Capa que cubre TODA la pantalla */
+.modal-overlay{
+  position: fixed;
+  inset: 0;                 /* top:0 right:0 bottom:0 left:0 */
+  background: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;            /* por encima de todo */
+  backdrop-filter: blur(3px);
+}
+
+/* Caja del modal, centrada y con ancho justo */
+.modal-content{
+  background: linear-gradient(145deg,#111,#1b1b1b);
+  color:#fff;
+  border:1px solid #e53935;
+  border-radius:16px;
+  padding:24px 28px;
+  width: max-content;
+  min-width: 380px;
+  max-width: 480px;
+  text-align:center;
+  box-shadow: 0 0 40px rgba(229,57,53,.35);
+  position: relative;
+  animation: modalFade .22s ease-out;
+
+  p{
+    margin: 20px;
+  }
+}
+
+@keyframes modalFade{
+  from{ opacity:0; transform: translateY(8px) scale(.98); }
+  to{   opacity:1; transform: translateY(0)   scale(1);    }
+}
+
+.modal-close{
+  position:absolute; top:10px; right:14px;
+  background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;
+}
+
+/* Controles cantidad */
+.cantidad-control{ display:flex; align-items:center; justify-content:center; gap:12px; margin:14px 0; }
+.btn-cantidad{
+  width:36px; height:36px; border-radius:8px; border:1px solid #555;
+  background:#222; color:#fff; font-size:1.2rem; cursor:pointer; transition:.2s;
+}
+.btn-cantidad:hover{ background:#e53935; border-color:#e53935; }
+.cantidad{ min-width:28px; font-weight:700; }
+
+/* Botones acción en una línea sin cortes */
+.modal-actions{ display:flex; gap:12px; justify-content:center; margin-top:12px; }
+.btn-cancelar,.btn-confirmar{
+  padding:.7rem 1.4rem; border:none; border-radius:8px; font-weight:700; cursor:pointer;
+  white-space: nowrap; /* evita salto de línea del texto */
+}
+.btn-cancelar{ background:#333; color:#fff; }
+.btn-cancelar:hover{ background:#444; }
+.btn-confirmar{ background:#e53935; color:#fff; }
+.btn-confirmar:hover{ background:#ff4b4b; }
