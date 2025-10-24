@@ -1,9 +1,11 @@
 import "../styles/carrito.css";
 import { useCarrito } from "../context/CarritoContext";
+import CheckoutModal from "../components/CheckoutModal";
+import { useState } from "react";
 
 export default function Carrito() {
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const { carrito, cambiarCantidad, eliminarProducto, vaciarCarrito } = useCarrito();
-
   const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 
   return (
@@ -40,8 +42,9 @@ export default function Carrito() {
 
           <div className="carrito-resumen">
             <p className="total">Total: $<strong>{total.toLocaleString()}</strong></p>
-            <button className="btn-comprar">Realizar compra</button>
+            <button className="btn-comprar" onClick={() => setCheckoutOpen(true)} disabled={carrito.length===0}>Realizar compra</button>
           </div>
+          <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
         </>
       )}
     </div>

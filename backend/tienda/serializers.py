@@ -59,8 +59,12 @@ class PedidoSerializer(serializers.ModelSerializer):
         read_only_fields = ['creado_en', 'actualizado_en', 'total']
 
     def create(self, validated_data):
-        detalles_data = validated_data.pop('detalles')
+        detalles_data = validated_data.pop('detalles', [])
         pedido = Pedido.objects.create(**validated_data)
         for detalle_data in detalles_data:
+            detalle_data['precio_unitario'] = float(detalle_data.get('precio_unitario', 0))
             DetallePedido.objects.create(pedido=pedido, **detalle_data)
         return pedido
+
+
+# ES ESTE 

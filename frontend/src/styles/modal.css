@@ -1,3 +1,5 @@
+
+/* LOGIN Y REGISTRO */
 /* Fondo oscuro detrás del modal */
 .modal-overlay {
   position: fixed;
@@ -92,7 +94,7 @@
 
 
 
-/* accion añadir al carrito  */
+/* Modal añadir al carrito  */
 /* Capa que cubre TODA la pantalla */
 .modal-overlay{
   position: fixed;
@@ -154,3 +156,22 @@
 .btn-cancelar:hover{ background:#444; }
 .btn-confirmar{ background:#e53935; color:#fff; }
 .btn-confirmar:hover{ background:#ff4b4b; }
+
+
+/* modal proceso de compra */
+/* Checkout modal specific */
+.checkout-modal { width: 520px; max-width: 92vw; padding: 22px; border-radius: 14px; }
+.checkout-steps { display:flex; gap:10px; margin:8px 0 16px; }
+.checkout-steps .step { padding:6px 10px; border-radius:8px; background:#1b1b1b; color:#aaa; font-weight:600; }
+.checkout-steps .step.active { background:#e53935; color:#fff; box-shadow:0 6px 18px rgba(229,57,53,0.18); }
+.checkout-form label { display:block; margin-top:10px; font-size:0.9rem; color:#ddd; }
+.checkout-form input, .checkout-form textarea { width:100%; padding:10px 12px; margin-top:6px; border-radius:8px; border:1px solid #333; background:#0f0f0f; color:#fff; font-size:0.95rem; }
+.checkout-form textarea { min-height:70px; resize:vertical; }
+.checkout-actions { margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.checkout-actions .right { display:flex; gap:10px; }
+.btn-primary { background:#e53935; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:700; }
+.btn-primary:disabled { opacity:0.6; cursor:not-allowed; }
+.btn-secondary { background:#222; color:#fff; border:1px solid #333; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.btn-cancel { background:transparent; color:#ccc; border:1px solid #444; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.row { display:flex; gap:12px; margin-top:6px; }
+.mensaje-error { color:#ff9aa2; background:rgba(229,57,53,0.06); padding:8px 10px; border-radius:8px; margin-top:8px; font-weight:600; }

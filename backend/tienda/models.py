@@ -10,15 +10,16 @@ class Usuario(AbstractUser):
     ]
 
     email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True, unique=True)
     imagen_perfil = models.ImageField(upload_to="usuarios/", blank=True, null=True)
     rol = models.CharField(max_length=20, choices=ROLES, default='cliente')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True, unique=True)
+
+    USERNAME_FIELD = 'email' 
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return f"{self.username} ({self.rol})"
-
+        return f"{self.email} ({self.rol})"
 
 
 class Vehiculo(models.Model):
@@ -90,3 +91,6 @@ class DetallePedido(models.Model):
         if self.precio_unitario is None:
             return 0
         return self.precio_unitario * self.cantidad
+
+
+# ESTE ES 

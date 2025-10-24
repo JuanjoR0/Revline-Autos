@@ -130,8 +130,14 @@ REST_FRAMEWORK = {
     ),
 }
 
+# ✅ Permitir cookies y credenciales entre frontend y backend
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]
 
+# ✅ Modelo de usuario personalizado
 AUTH_USER_MODEL = 'tienda.Usuario'

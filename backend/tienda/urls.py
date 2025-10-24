@@ -18,3 +18,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('registro/', views.registro, name='registro'),
 ]
+
+# ESTE ES 

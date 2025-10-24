@@ -15,6 +15,10 @@ export default function Navbar() {
   const [registroSubmitted, setRegistroSubmitted] = useState(false);
   const navigate = useNavigate();
 
+console.log("Usuario:", usuario);
+  console.log("Imagen perfil:", usuario?.imagen_perfil);
+  console.log(`${import.meta.env.VITE_API_URL}${usuario?.imagen_perfil}`);
+
   const handleLogoutClick = () => {
     handleLogout();   // limpia usuario + localStorage
     navigate("/");    // redirige al inicio
@@ -121,8 +125,8 @@ export default function Navbar() {
             </>
           ) : (
             <div className="navbar-user">
-              <img src={usuario.imagen && usuario.imagen !== "" ? usuario.imagen : "/usuario.png"} alt="Perfil" className="navbar-avatar"/>
-              <span className="usuario-nombre">{usuario.nombre || "Usuario"}</span>
+              <img src={usuario.imagen_perfil && usuario.imagen_perfil !== "" ? `${import.meta.env.VITE_API_URL}${usuario.imagen_perfil}` : "/usuario.png"} alt="Perfil" className="navbar-avatar"/>
+              <span className="usuario-nombre">{usuario.username || "Usuario"}</span>
               <NavLink to="/carrito">
                 <img src={carrito} alt="Carrito" className="icono-carrito" />
               </NavLink>

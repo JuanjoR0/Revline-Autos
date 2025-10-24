@@ -18,3 +18,4 @@ urlpatterns += [
     re_path(r'^(?!api/|media/).*$', TemplateView.as_view(template_name='index.html')),
 ]
 
+# ESTE es 

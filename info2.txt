@@ -207,3 +207,25 @@ Para ejecutar el frontend(Vite + React) (npm run dev)
 51. Mediante el uso de localStorage del navegador dentro de CarritoContext conseguimos la persistencia del carrito por sesion:
         - Los productos del carrito permanecen incluso al cerrar sesión o actualizar la página.
         - Cada usuario mantiene su carrito mientras navega (asociado al localStorage del navegador).
+
+--- PASO 13 (Proceso realizar compra) ---
+
+52. Creamos components/CheckoutModal.jsx, modal reutilizable para el proceso de compra en dos pasos: Información de entrega, Información de pago
+        - Usa createPortal() para renderizar el modal fuera del árbol principal, directamente sobre el <body>.
+        - Se bloquea el scroll de fondo mientras está abierto (document.body.style.overflow = "hidden").
+        - Cada paso muestra un conjunto distinto de campos (step === 1 o step === 2), y se navega entre ellos con botones “Siguiente / Anterior”.
+53. Se crean estados con useState para gestionar los datos.
+        - step controla qué vista se muestra (1 → entrega, 2 → pago).
+        - Se añade error y loading para mostrar mensajes y feedback visual.
+        - Al cerrar el modal (onClose), se reinician los estados
+54. Validamos los formularios y ponemos opcion de autocompletado para todos los campos con informacion falsa para hacer la simulacion de compra mas amena con las funciones (fakeEntrega) y (fakePago):
+        - Se crean funciones validarEntrega() y validarPago() que revisan los campos obligatorios.
+        - Si falta algo, se muestra un mensaje en setError("Completa todos los campos...").
+55. Usamos el estado global del carrito que hemos definido en CarritoContext (usecarrito) y se importa en components/CheckoutModal.jsx para apartir de él generan los detalles del pedido.
+56. Integramos el CheckoutModal.jsx en la página de carrito y se controla con un estado, lo abrirá el botón "Realizar Compra". Cuando se pulse finalizar compra manda un POST al endpoint /api/pedidos/ con los datos.
+57. Desde tienda/views.py en PedidoViewSet.create() recibimos la peticion con los datos del pedido y lo creamos en la base de datos, incluyendo los detalles del carrito y la información del formulario (que van en esa peticion POST), que en caso de exito:
+        - Se vacía el carrito (vaciarCarrito()).
+        - Se cierra el modal (onClose()).
+        - Se redirige automáticamente a /pedidos con navigate("/pedidos").
+
+--- PASO 14 (Mis pedidos) ---
