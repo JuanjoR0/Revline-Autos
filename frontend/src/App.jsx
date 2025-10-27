@@ -11,6 +11,7 @@ import InicioSesion from "./pages/Login";
 import Contacto from "./pages/Contacto";
 import Blog from "./pages/Blog";
 
+
 function Layout() {
   const location = useLocation();
   const isTienda = location.pathname === "/tienda";

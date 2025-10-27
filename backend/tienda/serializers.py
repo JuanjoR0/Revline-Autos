@@ -48,7 +48,7 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 
 class PedidoSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer(read_only=True)
-    detalles = DetallePedidoSerializer(many=True)
+    detalles = DetallePedidoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Pedido

@@ -229,3 +229,26 @@ Para ejecutar el frontend(Vite + React) (npm run dev)
         - Se redirige automáticamente a /pedidos con navigate("/pedidos").
 
 --- PASO 14 (Mis pedidos) ---
+
+58. En views.py creamos  PedidoViewSet.mis_pedidos() que devuelva solo los pedidos del usuario autenticado mediante GET /api/pedidos/mis_pedidos/
+59. En PedidoSerializer, ponemos los detalles solo lectura para listar sin exigir payload de creación, ya que Django REST Framework entiende que cuando alguien cree un pedido (POST), también debe enviar en el payload un bloque JSON con detalles. Pero en este caso:
+                - El GET /api/pedidos/mis_pedidos/ solo quiere mostrar los pedidos con sus detalles,
+                - No necesita exigir datos para crearlos (ya se insertan en SQL en tu PedidoViewSet.create()).
+60. En settings.py añadimos SIMPLE_JWT = { 'AUTH_HEADER_TYPES': ('Bearer',) } por defecto, el paquete rest_framework_simplejwt
+    (que maneja los JWT en Django) espera un encabezado que empiece con JWT, no con Bearer, pero con esta configuracion le dices “Cuando recibas un encabezado Authorization: Bearer <token>, considéralo un JWT válido.”.
+61. En backend/urls.py registramos las rutas del sistema de autenticación JWT de Django REST Framework, de modo que puedas obtener y refrescar tokens válidos desde el frontend
+62. En views.py actualizamos login() para emitir tokens JWT (usando RefreshToken.for_user(user)) para autenticar las peticiones sin depender de sesiones tradicionales de Django.
+63. En Navbar.jsx handleLogin(), guardamos (en localStorage) el access del token JWT emitido por login() previamente y las peticiones posteriores lo usan para autenticarse contra el backend.
+64. En Pedidos.jsx creamos un useeffect() para usar el fetch autenticado, es decir recupera el mismo token JWT que handleLogin() guardó en el localStorage, y lo usa para autenticar la petición fetch al backend:
+                - Filtrar por pestañas: Todos / Pendiente / Entregado y ordenado de mas reciente a menos por el campo creado_en
+65. Añadimos en views.py en PedidoViewSet la accion marcar_recibido(), actualiza el campo estado a → "entregado".
+66. En Pedidos.jsx añadimos el componente marcarComoRecibido y se lo asignamos al boton "Marcar como recibido" en el onClick={()=>} para que dispare una llamada PATCH cuando se pulse.
+
+--- PASO 15 (Acceso panel administracion) ---
+
+67. En el archivo backend/urls.py, ajustamos la ruta catch-all para que no capture /admin/, ya que esa parte debe manejarla Django, no el frontend React.
+68. En el Navbar.jsx, aprovechamos que ya guardamos el objeto usuario con su campo rol tras el login en el handleLogin(), de este modo el frontend sabe si el usuario actual es administrador.
+69. Modificamos el menú para mostrar diferentes opciones según el rol del usuario
+                - Si usuario = "cliente": se muestra en el nav Mis Pedidos
+                - Si usuario = "administrador": se muestra en el nav Administracion
+        (Se usa un <a> normal (no <NavLink>) porque React Router intercepta las rutas internas y haría que el panel no cargue. Con <a href> el navegador hace una navegación real al backend Django.)

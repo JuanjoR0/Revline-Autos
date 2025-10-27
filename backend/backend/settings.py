@@ -141,3 +141,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 # ✅ Modelo de usuario personalizado
 AUTH_USER_MODEL = 'tienda.Usuario'
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}

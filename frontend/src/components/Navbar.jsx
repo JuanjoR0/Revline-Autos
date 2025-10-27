@@ -14,50 +14,62 @@ export default function Navbar() {
   const [loginSubmitted, setLoginSubmitted] = useState(false);
   const [registroSubmitted, setRegistroSubmitted] = useState(false);
   const navigate = useNavigate();
+  
 
-console.log("Usuario:", usuario);
-  console.log("Imagen perfil:", usuario?.imagen_perfil);
-  console.log(`${import.meta.env.VITE_API_URL}${usuario?.imagen_perfil}`);
 
   const handleLogoutClick = () => {
     handleLogout();   // limpia usuario + localStorage
     navigate("/");    // redirige al inicio
   };
 
-  // 🧠 LOGIN
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoginSubmitted(true);
-    setMensajeError("");
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoginSubmitted(true);
+  setMensajeError("");
 
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value;
+  const email = e.target.email.value.trim();
+  const password = e.target.password.value;
 
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!emailOk || !password) {
-      setMensajeError("Introduce un correo válido y la contraseña.");
-      return;
-    }
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!emailOk || !password) {
+    setMensajeError("Introduce un correo válido y la contraseña.");
+    return;
+  }
 
-    try {
-      const res = await api.post("login/", { email, password });
-      if (res.data && res.data.usuario) {
-        setUsuario(res.data.usuario);
-        setLoginOpen(false);
-        setLoginSubmitted(false);
-      } else {
-        setMensajeError("Credenciales incorrectas.");
+  try {
+    const res = await api.post("login/", { email, password });
+
+    if (res.data && res.data.usuario) {
+      // ✅ Guarda el token JWT devuelto por el backend
+      if (res.data.access) {
+        localStorage.setItem("token", res.data.access);
       }
-    } catch (err) {
-      if (err.response?.status === 404) {
-        setMensajeError("Este usuario no existe. Regístrate antes de iniciar sesión.");
-      } else if (err.response?.status === 401) {
-        setMensajeError("Contraseña incorrecta.");
-      } else {
-        setMensajeError("Error al iniciar sesión. Inténtalo de nuevo.");
-      }
+
+      // ✅ Guarda el usuario completo (incluye rol, email, etc.)
+      localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+
+      // ✅ Actualiza el contexto o estado global
+      setUsuario(res.data.usuario);
+
+      // ✅ Cierra el modal y limpia estado
+      setLoginOpen(false);
+      setLoginSubmitted(false);
+      setMensajeError("");
+    } else {
+      setMensajeError("Credenciales incorrectas.");
     }
-  };
+  } catch (err) {
+    if (err.response?.status === 404) {
+      setMensajeError("Este usuario no existe. Regístrate antes de iniciar sesión.");
+    } else if (err.response?.status === 401) {
+      setMensajeError("Contraseña incorrecta.");
+    } else {
+      setMensajeError("Error al iniciar sesión. Inténtalo de nuevo.");
+    }
+  }
+};
+
+
 
   // 📝 REGISTRO
   const handleRegistro = async (e) => {
@@ -113,7 +125,8 @@ console.log("Usuario:", usuario);
           <NavLink to="/tienda" className={({ isActive }) => (isActive ? "activo" : "")}>Tienda</NavLink>
           <NavLink to="/contacto" className={({ isActive }) => (isActive ? "activo" : "")}>Contacto</NavLink>
           <NavLink to="/blog" className={({ isActive }) => (isActive ? "activo" : "")}>Blog</NavLink>
-          {usuario && <NavLink to="/pedidos" className={({ isActive }) => (isActive ? "activo link-pedidos" : "link-pedidos")}>Mis pedidos</NavLink>}
+          {usuario?.rol === "cliente" && <NavLink to="/pedidos" className={({ isActive }) => (isActive ? "activo link-pedidos" : "link-pedidos")}>Mis pedidos</NavLink>}
+          {usuario?.rol === "administrador" && (<a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener noreferrer" className="admin-link">Administración</a>)}
         </nav>
 
         <div className="navbar-login">

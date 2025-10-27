@@ -8,6 +8,10 @@ from rest_framework.permissions import AllowAny
 from django.db import connection
 from django.contrib.auth import authenticate, login as django_login
 from .serializers import UsuarioSerializer
+from rest_framework.decorators import action
+from .models import Pedido
+from .serializers import PedidoSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class RegistroUsuarioView(generics.CreateAPIView):
     queryset = Usuario.objects.all()
@@ -27,7 +31,7 @@ class VehiculoViewSet(viewsets.ModelViewSet):
 
 
 class PedidoViewSet(viewsets.ViewSet):
-    permission_classes = [AllowAny]  # 👈 cualquiera puede crear pedidos (sin autenticación)
+    permission_classes = [AllowAny] 
 
     def create(self, request):
         data = request.data
@@ -37,7 +41,7 @@ class PedidoViewSet(viewsets.ViewSet):
         codigo_postal = data.get("codigo_postal")
         provincia = data.get("provincia")
         detalles = data.get("detalles", [])
-        usuario_email = data.get("email")  # lo mandamos desde el frontend
+        usuario_email = data.get("email") 
 
         if not (direccion and codigo_postal and provincia and usuario_email):
             return Response({"error": "Faltan datos obligatorios."}, status=400)
@@ -79,12 +83,30 @@ class PedidoViewSet(viewsets.ViewSet):
         except Exception as e:
             print("❌ ERROR al crear pedido:", str(e))
             return Response({"error": "Error interno al crear el pedido", "detalles": str(e)}, status=500)
-        
+    
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def mis_pedidos(self, request):
+        usuario = request.user
+        pedidos = Pedido.objects.filter(usuario=usuario).order_by('-creado_en')
+        serializer = PedidoSerializer(pedidos, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['patch'], permission_classes=[IsAuthenticated])
+    def marcar_recibido(self, request, pk=None):
+        try:
+            pedido = Pedido.objects.get(pk=pk, usuario=request.user)
+            pedido.estado = "entregado"
+            pedido.save()
+            return Response({"mensaje": "Pedido marcado como entregado"}, status=200)
+        except Pedido.DoesNotExist:
+            return Response({"error": "Pedido no encontrado o no pertenece al usuario"}, status=404)
+
+
+from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
-
     email = request.data.get('email')
     password = request.data.get('password')
 
@@ -95,18 +117,17 @@ def login(request):
     if user is None:
         return Response({'error': 'Credenciales incorrectas'}, status=401)
 
-    django_login(request, user)
-    request.session.save()
-    csrf_token = get_token(request)
+    # ✅ Generar tokens JWT
+    refresh = RefreshToken.for_user(user)
 
-      # ✅ Usa el serializer para enviar todos los campos del usuario
+    # ✅ Serializar usuario
     user_data = UsuarioSerializer(user).data
 
     return Response({
         "mensaje": "Inicio de sesión exitoso",
         "usuario": user_data,
-        "csrfToken": csrf_token,
-        "session_key": request.session.session_key
+        "access": str(refresh.access_token),  # 👈 token principal
+        "refresh": str(refresh),              # 👈 token para renovar
     }, status=200)
 
 @api_view(['POST'])
@@ -130,4 +151,3 @@ def registro(request):
 
     return Response({'mensaje': 'Usuario creado correctamente'}, status=status.HTTP_201_CREATED)
 
-# ESTA ES 
