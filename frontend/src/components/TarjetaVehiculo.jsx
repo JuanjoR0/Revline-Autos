@@ -3,10 +3,13 @@ import carritoIcono from "../assets/carrito-de-compras.png";
 import ModalCarrito from "./ModalCarrito";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNotificacion } from "../context/NotificacionContext";
+
 
 export default function TarjetaVehiculo({ vehiculo }) {
   const { usuario, setLoginOpen } = useAuth();
   const [modalAbierto, setModalAbierto] = useState(false);
+  const { mostrarMensaje } = useNotificacion();
 
   const atributos = [
     { label: "Velocidad", valor: vehiculo.velocidad },
@@ -16,7 +19,7 @@ export default function TarjetaVehiculo({ vehiculo }) {
 
   const handleAddToCart = () => {
     if (!usuario) {
-      setLoginOpen(true); // 🔓 abre el modal de login del header
+      setLoginOpen(true); // abre el modal de login del header
       return;
     }
     setModalAbierto(true);
@@ -26,7 +29,7 @@ export default function TarjetaVehiculo({ vehiculo }) {
     <div className="tarjeta-vehiculo">
       {/* HEADER */}
       <div className="tarjeta-header">
-        <p className="vehiculo-stock">
+        <p className={`vehiculo-stock ${vehiculo.stock <= 0 ? "no-stock" : ""}`}>
           Stock: <span>{vehiculo.stock}</span>
         </p>
         <img
@@ -58,17 +61,12 @@ export default function TarjetaVehiculo({ vehiculo }) {
         <p className="precio">
           DESDE: <strong>${vehiculo.precio}</strong>
         </p>
-        <button className="btn-cart" onClick={handleAddToCart}>
+        <button className="btn-cart" onClick={handleAddToCart} disabled={vehiculo.stock <= 0}>
           <img src={carritoIcono} alt="Carrito" />
         </button>
       </div>
 
-      {/* MODAL CARRITO */}
-      <ModalCarrito
-        isOpen={modalAbierto}
-        onClose={() => setModalAbierto(false)}
-        producto={vehiculo}
-      />
+      <ModalCarrito isOpen={modalAbierto} onClose={() => setModalAbierto(false)} producto={vehiculo}/>
     </div>
   );
 }

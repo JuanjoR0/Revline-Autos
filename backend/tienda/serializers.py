@@ -3,10 +3,13 @@ from .models import Usuario, Vehiculo, Pedido, DetallePedido
 from django.contrib.auth import get_user_model
 
 
+# ===============================
+# USUARIO
+# ===============================
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['id', 'username', 'email', 'telefono', 'rol', 'imagen_perfil', 'fecha_creacion']
+        fields = ['id', 'nombre', 'email', 'telefono', 'rol', 'imagen_perfil', 'fecha_creacion']
         read_only_fields = ['fecha_creacion']
 
 
@@ -15,25 +18,31 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'username', 'email', 'telefono', 'rol', 'imagen_perfil', 'password']
+        fields = ['id', 'nombre', 'email', 'telefono', 'rol', 'imagen_perfil', 'password']
 
     def create(self, validated_data):
         usuario = get_user_model().objects.create_user(
-            username=validated_data['username'],
-            email=validated_data.get('email'),
-            telefono=validated_data.get('telefono'),
-            rol=validated_data.get('rol', 'cliente'),
-            password=validated_data['password']
+            email=validated_data['email'],
+            password=validated_data['password'],
+            nombre=validated_data.get('nombre', ''),
+            telefono=validated_data.get('telefono', ''),
+            rol=validated_data.get('rol', 'cliente')
         )
         return usuario
 
 
+# ===============================
+# VEHÍCULOS
+# ===============================
 class VehiculoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehiculo
         fields = '__all__'
 
 
+# ===============================
+# DETALLES DE PEDIDO
+# ===============================
 class DetallePedidoSerializer(serializers.ModelSerializer):
     vehiculo = VehiculoSerializer(read_only=True)
     vehiculo_id = serializers.PrimaryKeyRelatedField(
@@ -46,6 +55,9 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
         read_only_fields = ['subtotal']
 
 
+# ===============================
+# PEDIDOS
+# ===============================
 class PedidoSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer(read_only=True)
     detalles = DetallePedidoSerializer(many=True, read_only=True)
@@ -65,6 +77,3 @@ class PedidoSerializer(serializers.ModelSerializer):
             detalle_data['precio_unitario'] = float(detalle_data.get('precio_unitario', 0))
             DetallePedido.objects.create(pedido=pedido, **detalle_data)
         return pedido
-
-
-# ES ESTE 

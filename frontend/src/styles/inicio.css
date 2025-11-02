@@ -1,4 +1,4 @@
-/* HERO PRINCIPAL */
+/* ===== HERO GENERAL ===== */
 .hero {
   position: relative;
   left: 50%;
@@ -16,92 +16,395 @@
   overflow: hidden;
 }
 
-/* Evitar scroll horizontal */
 body {
   overflow-x: hidden;
 }
 
-/* Overlay oscuro */
-.hero::before {
-  content: "";
+/* Overlay degradado oscuro */
+.hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 35%, rgba(0, 0, 0, 0.4));
   z-index: 1;
 }
 
-/* Contenedor general del contenido */
+/* Contenedor principal */
 .hero-container {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  
   display: flex;
-  justify-content: flex-start; /* texto a la izquierda */
+  justify-content: space-between;
   align-items: center;
+  gap: 4rem;
   height: 100%;
 }
 
-/* Bloque del texto */
+/* ===== COLUMNA IZQUIERDA ===== */
 .hero-content {
-  max-width: 600px;
+  max-width: 800px;
   text-align: left;
-  animation: fadeInUp 1.2s ease forwards;
+  animation: fadeInLeft 1.2s ease forwards;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateX(-40px);
 }
 
-@keyframes fadeInUp {
+@keyframes fadeInLeft {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }
 
-/* Título */
 .hero-content h1 {
   font-size: 3rem;
-  margin-bottom: 1rem;
   font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
-/* Párrafo */
-.hero-content p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: #f1f1f1;
+.hero-content h1 span {
+  color: #e63946;
 }
 
-/* Botón */
-.hero-content button {
-  padding: 0.8rem 2rem;
+p {
+      font-size: 1rem;
+      max-width: 500px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+/* Botones */
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.6rem 1.5rem;
   font-size: 1rem;
-  background-color: #e63946;
-  border: none;
   border-radius: 0.5rem;
-  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.hero-content button:hover {
+.btn-primary {
+  background-color: #e63946;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
   background-color: #d62828;
   transform: scale(1.05);
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2.2rem;
-  }
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #e63946;
+  color: white;
+}
 
-  .hero-content p {
-    font-size: 1rem;
+.btn-secondary:hover {
+  background-color: #e63946;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Estadísticas */
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.hero-stats div {
+  text-align: left;
+}
+
+.hero-stats h3 {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.hero-stats p {
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.advertencia {
+  margin-top: 10px;
+  background: rgba(25, 25, 25, 0.85); /* Fondo negro translúcido */
+  border: 1px solid rgba(100, 100, 100, 0.3); /* Borde gris sutil */
+  border-left: 5px solid #888; /* Línea lateral gris elegante */
+  padding: 22px 26px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+  color: #e4e4e4;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.advertencia:hover {
+  border-color: rgba(180, 180, 180, 0.5);
+  border-left-color: #a0a0a0;
+}
+
+/* Título */
+.advertencia h3 {
+  color: #d0d0d0;
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Emoji o icono de advertencia */
+.advertencia h3::before {
+  content: "⚠️";
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Texto */
+.advertencia p {
+  color: #cfcfcf;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+/* Bloque de credenciales */
+.credenciales {
+  background: rgba(15, 15, 15, 0.85);
+  border-radius: 8px;
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid rgba(80, 80, 80, 0.6);
+  transition: all 0.3s ease;
+}
+
+.credenciales:hover {
+  border-color: rgba(160, 160, 160, 0.8);
+}
+
+.credenciales p {
+  margin: 5px 0;
+  color: #d8d8d8;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.credenciales strong {
+  color: #f5f5f5; /* Blanco suave de acento */
+}
+
+
+@keyframes fadeInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
+}
+
+.hero-warning .warning-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.hero-warning h3 {
+  color: #a5dc69;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.hero-warning p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #d5d5d5;
+}
+
+.warning-credentials {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+}
+
+.warning-credentials p {
+  margin: 0.2rem 0;
+  color: #9ef29d;
+}
+
+.warning-credentials strong {
+  color: #d1f7be;
+}
+
+/* === SECCIÓN VEHÍCULOS === */
+.vehiculos {
+  
+  color: white;
+  padding: 80px 0px;
+  text-align: center;
+}
+
+.vehiculos h2 {
+  font-size: 2.4rem;
+  margin-bottom: 50px;
+  font-weight: 700;
+}
+
+.vehiculos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.vehiculo-card {
+ 
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+}
+
+.vehiculo-card:hover {
+  transform: translateY(-5px);
+}
+
+.vehiculo-card img {
+  
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.vehiculo-card h3 {
+  margin: 20px 0;
+  font-size: 1.3rem;
+  color: #e4e4e4;
+}
+
+/* === SOBRE NOSOTROS === */
+.sobre-nosotros {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: #111;
+  color: #eaeaea;
+  padding: 100px 0;
+}
+
+.sobre-contenido {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 50px;
+}
+
+.sobre-imagen {
+  width: 800px;
+}
+
+.sobre-imagen img {
+  width: 100%;
+  height: auto;
+  border-radius: 30px;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+/* Contenedor derecho (barra + texto) */
+.sobre-derecha {
+  display: flex;
+  align-items: stretch; /* ✅ hace que la barra se extienda en altura */
+  gap: 40px;
+  padding: 40px 30px;
+  position: relative;
+  width: 600px;
+  height: 100%; /* ✅ asegura que herede la altura del contenedor padre */
+}
+
+/* Barra roja neón */
+.barra-neon {
+  width: 6px;
+  background: linear-gradient(to bottom, #ff2a2a, #ff5959);
+  box-shadow: 0 0 12px #ff2a2a, 0 0 24px #ff5959;
+  border-radius: 10px;
+  flex-shrink: 0;
+  animation: neonglow 3s infinite ease-in-out;
+  align-self: stretch; /* ✅ ocupa toda la altura de la columna derecha */
+}
+
+@keyframes neonglow {
+  0%, 100% {
+    box-shadow: 0 0 12px #ff2a2a, 0 0 24px #ff5959;
+    opacity: 0.9;
+  }
+  50% {
+    box-shadow: 0 0 18px #ff4747, 0 0 30px #ff8080;
+    opacity: 1;
+  }
+}
+
+/* Texto + botón */
+.sobre-texto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.sobre-texto h2 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.sobre-texto p {
+  color: #ccc;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* Botón catálogo */
+.ver-catalogo {
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  background-color: #e63946;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.ver-catalogo:hover {
+  background-color: #d62828;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(230, 57, 70, 0.6);
 }

@@ -5,12 +5,14 @@ import { useCarrito } from "../context/CarritoContext";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { useNotificacion } from "../context/NotificacionContext";
+
 
 export default function CheckoutModal({ isOpen, onClose }) {
   const { carrito, vaciarCarrito } = useCarrito();
   const { usuario } = useAuth();
   const navigate = useNavigate();
-
+  const { mostrarMensaje } = useNotificacion();
   const [step, setStep] = useState(1); // 1: entrega, 2: pago
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -123,14 +125,19 @@ export default function CheckoutModal({ isOpen, onClose }) {
         };
 
         try {
-        const res = await api.post("pedidos/", payload);
-        vaciarCarrito();
-        onClose();
-        navigate("/pedidos");
+          const res = await api.post("pedidos/", payload);
+          vaciarCarrito();
+
+          mostrarMensaje(" Pedido realizado correctamente ✅", "exito");
+
+          onClose();
+          navigate("/pedidos");
         } catch (err) {
-        console.error("Error al crear pedido:", err);
-        setError("No se pudo crear el pedido.");
+          console.error("Error al crear pedido:", err);
+          setError("No se pudo crear el pedido.");
+          mostrarMensaje("❌ Error al realizar el pedido", "error");
         }
+
   };
 
   return createPortal(
@@ -159,7 +166,7 @@ export default function CheckoutModal({ isOpen, onClose }) {
             <label>Datos adicionales</label>
             <textarea value={entrega.adicionales} onChange={(e)=>setEntrega({...entrega,adicionales:e.target.value})} placeholder="Información adicional..." />
             <div className="checkout-actions">
-              <button className="btn-secondary" onClick={fakeEntrega}>Autocompletar informacion</button>
+              <button className="btn-auto" onClick={fakeEntrega}>Autocompletar informacion</button>
               <div className="right">
                 <button className="btn-cancel" onClick={onClose}>Cancelar</button>
                 <button className="btn-primary" onClick={handleNext}>Siguiente</button>
@@ -185,7 +192,7 @@ export default function CheckoutModal({ isOpen, onClose }) {
             <label>Cupón descuento (opcional)</label>
             <input value={pago.cupon} onChange={(e)=>setPago({...pago,cupon:e.target.value})} placeholder="CODIGO" />
             <div className="checkout-actions">
-              <button className="btn-secondary" onClick={fakePago}>Autocompletar pago</button>
+              <button className="btn-auto" onClick={fakePago}>Autocompletar pago</button>
               <div className="right">
                 <button className="btn-cancel" onClick={()=>setStep(1)}>Anterior</button>
                 <button className="btn-primary" onClick={handleBuy} disabled={loading}>{loading? "Procesando..." : "Finalizar Compra"}</button>

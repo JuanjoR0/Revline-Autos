@@ -252,3 +252,38 @@ Para ejecutar el frontend(Vite + React) (npm run dev)
                 - Si usuario = "cliente": se muestra en el nav Mis Pedidos
                 - Si usuario = "administrador": se muestra en el nav Administracion
         (Se usa un <a> normal (no <NavLink>) porque React Router intercepta las rutas internas y haría que el panel no cargue. Con <a href> el navegador hace una navegación real al backend Django.)
+
+--- PASO 16 (ultimos detalles) ---
+
+70. Creamos context/NotificacionContext.jsx para gestionaR los toasts informativos para mostrar mensajes flotantes en pantalla.
+71. Importamos NotificacionContext.jsx en main.jsx para englobar <CarritoProvider> en <NotificacionProvider> para que todas las páginas puedan usar los toasts.
+72. Importamos NotificacionContext.jsx en CheckoutModal.jsx y usamos la funcion mostrarMensaje para usarla en el payload. Conseguimos un toast al realizar un pedido.
+73. Importamos NotificacionContext.jsx en Modalcarrito.jsx y usamos la funcion mostrarMensaje para usarla en la funcion handleAddToCart=()=>{}. Conseguimos un toast al añadir un producto al carrito.
+74. En Navbar.jsx importamos el CarritoContext y calculamos el total de productos en el carrito utilizando reduce(), que sirve para sumar las cantidades de todos los productos del carrito y lo mostramos encima del icono del carrito.
+
+
+Validaciones y funcionalidades:
+- En un campo Email solo se puede introducir un texto en formato email.
+- En un campo Contraseña solo se puede meter texto sin espacios.
+- Si el usuario intenta iniciar sesion sin estar registrado se le dice que primero se registre.
+- Si la contraseña introducida para un email registrado es incorrecta se indica.
+- Si el usuario se intenta registrar con un email ya registrado se le indica que inicie sesion.
+- Si el usuario intenta añadir al carrito sin tener iniciada sesion se le lleva al modal inicio sesion.
+- Si el usuario hace un pedido , a los vehiculos de ese pedido se les baja el stock.
+- Si el stock es 0 se desactiva el boton añadir al carrito.
+- Desde el carrito se puede subir el numero de cantidad en el maximo del stock.
+- Si el usuario inicia sesion se cambia en el header el contenedor de Inicio|Registro por el de usuario (foto perfil, nombre, carrito y cerrar sesion).
+- Si el usuario inicia sesion aparece en el menu del header Mis pediddos.
+- Si el usuario cierra sesion la web se refresca y lleva al inicio.
+- Si el usuario realiza un pedido el carrito se vacia.
+- El cliente puede cambiar el estado de su pedido .
+- Los campos del proceso de pago solo aceptan formatos correctos.
+- Hay un boton de autocompletar los campos con informacion aleatoria para amenizar el proceso de compra falsa.
+- El footer y header aparecen siempre, solo cambia el contenido que se muestra en el main.
+- Si el usuario se registra como administrador le aparece en el menu la seccion Administracion.
+- Tras registrarse correctamente, el usuario inicia sesión automáticamente sin necesidad de hacerlo manualmente.
+- Al recargar la página, el sistema mantiene la sesión activa (usuario cargado desde localStorage).
+- Si el usuario añade un producto al carrito, se muestra un toast 'Producto añadido al carrito'
+- Si se elimina un producto o se vacía el carrito, se actualiza automáticamente tanto en la vista como en localStorage.
+- Si el usuario completa un pedido , se muestra un toast 'Pedido realizado correctamente'.
+- Validación visual (borde rojo/verde) en campos de formularios.

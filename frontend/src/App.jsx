@@ -9,7 +9,8 @@ import Pedidos from "./pages/Pedidos";
 import Registro from "./pages/Registro";
 import InicioSesion from "./pages/Login";
 import Contacto from "./pages/Contacto";
-import Blog from "./pages/Blog";
+import PoliticaPrivacidad from "./pages/Privacidad";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 function Layout() {
@@ -18,11 +19,12 @@ function Layout() {
 
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       {isTienda ? (
         <Tienda />
       ) : (
-        <main style={{ flex: 1 }}>
+        <main>
           <div className="container" >
             <Routes>
               <Route path="/" element={<Inicio />} />
@@ -32,7 +34,7 @@ function Layout() {
               <Route path="/registro" element={<Registro />} />
               <Route path="/login" element={<InicioSesion />} />
               <Route path="/contacto" element={<Contacto />} />
-              <Route path="/blog" element={<Blog />} />
+              <Route path="/privacidad" element={<PoliticaPrivacidad />} />
             </Routes>
           </div>
         </main>

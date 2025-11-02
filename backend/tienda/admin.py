@@ -6,23 +6,27 @@ from .models import Usuario, Vehiculo, Pedido, DetallePedido
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
     model = Usuario
-    list_display = ('username', 'email', 'rol', 'telefono', 'is_staff', 'is_active')
+    list_display = ('email', 'nombre', 'rol', 'telefono', 'is_staff', 'is_active')
     list_filter = ('rol', 'is_staff', 'is_active')
+
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        ('Información Personal', {'fields': ('email', 'telefono', 'imagen_perfil', 'rol')}),
+        (None, {'fields': ('email', 'password')}),
+        ('Información Personal', {'fields': ('nombre', 'telefono', 'imagen_perfil', 'rol')}),
         ('Permisos', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Fechas importantes', {'fields': ('last_login', 'date_joined')}),
+        ('Fechas importantes', {'fields': ('last_login',)}),  # ✅ CORRECTO → lista o tupla
     )
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'telefono', 'rol', 'password1', 'password2', 'is_staff', 'is_active')}
-        ),
+            'fields': ('email', 'nombre', 'telefono', 'rol', 'password1', 'password2', 'is_staff', 'is_active'),
+        }),
     )
-    search_fields = ('username', 'email', 'telefono')
-    ordering = ('username',)
 
+    readonly_fields = ('fecha_creacion',)  # ✅ Solo lectura, fuera de fieldsets
+
+    search_fields = ('email', 'nombre', 'telefono')
+    ordering = ('email',)
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
@@ -43,7 +47,7 @@ class DetallePedidoInline(admin.TabularInline):
 class PedidoAdmin(admin.ModelAdmin):
     list_display = ('id', 'usuario', 'direccion', 'codigo_postal', 'provincia', 'estado', 'pagado', 'creado_en')
     list_filter = ('estado', 'pagado', 'provincia')
-    search_fields = ('usuario__username', 'direccion', 'provincia')
+    ssearch_fields = ('usuario__email', 'usuario__nombre', 'direccion', 'provincia')
     ordering = ('-creado_en',)
     inlines = [DetallePedidoInline]
     fields = ('usuario', 'direccion', 'codigo_postal', 'provincia', 'estado', 'pagado', 'creado_en', 'actualizado_en')

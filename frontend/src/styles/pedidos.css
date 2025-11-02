@@ -1,7 +1,14 @@
-.pedidos-container{
-  margin-top: 120px;
+.pedidos-container {
+  min-height: calc(100vh - 160px); /* resta header + footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-bottom: 2rem; /* deja aire antes del footer */
+  min-height: 94vh;
 }
 .pedidos-filtros {
+  margin-top: 120px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -48,6 +55,7 @@
   list-style: none;
   padding: 0;  
   margin-bottom: 2rem;
+  flex: 1;
 }
 
 .pedido-card {
@@ -126,28 +134,25 @@
 .detalle-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   background: #1a1a1a;
   border-radius: 12px;
   padding: 0.6rem;
 }
 
 .detalle-img {
-  width: 90px;
-  height: 70px;
+  width: 120px;
+  height: 60px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.detalle-info {
-  display: flex;
-  flex-direction: column;
-}
 
 .detalle-nombre {
   font-weight: bold;
   color: #fff;
   margin: 0;
+  padding: 10px 0px 0px 0px;
 }
 
 .detalle-cantidad {
@@ -158,10 +163,6 @@
 /* 📦 Info del pedido */
 .pedido-info {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.4rem;
   background: #1a1a1a;
   border-radius: 12px;
   padding: 1rem;
@@ -181,19 +182,6 @@
   font-size: 0.9rem;
 }
 
-/* 📦 Ajuste: el contenedor debe ser relativo para que funcione el posicionamiento */
-.pedido-info {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.6rem;
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 1.2rem;
-  color: #ddd;
-}
 
 
 .estado-badge.pendiente {

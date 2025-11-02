@@ -28,7 +28,7 @@ export default function Carrito() {
                 <div className="carrito-cantidad">
                   <button onClick={() => cambiarCantidad(p.id, -1)}>−</button>
                   <span>{p.cantidad}</span>
-                  <button onClick={() => cambiarCantidad(p.id, 1)}>+</button>
+                  <button onClick={() => cambiarCantidad(p.id, 1)} disabled={p.cantidad >= p.stock}>+</button>
                 </div>
 
                 <div className="carrito-subtotal">

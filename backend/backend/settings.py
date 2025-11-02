@@ -1,4 +1,4 @@
-
+from datetime import timedelta
 from pathlib import Path
 import dj_database_url, os
 from pathlib import Path
@@ -114,7 +114,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Carpeta donde Django servirá el build del frontend (Vite)
 TEMPLATES[0]['DIRS'] = [ BASE_DIR / 'frontend_dist' ]
-STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist', ]
+# STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist', ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -142,6 +142,14 @@ CSRF_TRUSTED_ORIGINS = [
 # ✅ Modelo de usuario personalizado
 AUTH_USER_MODEL = 'tienda.Usuario'
 
+
+
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    #Tiempo de vida del token de acceso
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=12), 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),  
+    "ROTATE_REFRESH_TOKENS": True,                 
+    "BLACKLIST_AFTER_ROTATION": True,              
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }

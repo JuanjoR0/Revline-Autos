@@ -1,0 +1,140 @@
+.footer {
+  width: 100%;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  border-top: 2px solid #4b0005;
+  position: relative;
+  z-index: 10;
+}
+
+/* 🔹 PARTE SUPERIOR (imagen de fondo) */
+.footer-top {
+  height: 400px;
+  background-image: url("../assets/footer.jpg"); /* 🔸 Cambia por tu imagen */
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+.footer-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  gap: 2rem;
+  text-align: center;
+}
+
+/* 🏁 Logo */
+.footer-logo {
+  width: 160px;
+  margin-bottom: 0.8rem;
+}
+
+.footer-slogan {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* 🔗 Enlaces */
+.footer-section h3 {
+  color: #c1121f;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+  gap: 30px;
+  font-size: 1.2rem;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+}
+
+/* 🌐 Redes sociales */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.social-icons a {
+  color: #ccc;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #c1121f;
+  transform: scale(1.15);
+}
+
+/* 🔸 PARTE INFERIOR NEGRA */
+.footer-bottom {
+  background-color: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  gap:4rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 40px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.footer-bottom p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.footer-links a {
+  color: #aaa;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}

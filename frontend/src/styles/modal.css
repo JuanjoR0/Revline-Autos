@@ -86,7 +86,7 @@
 }
 .mensaje-error {
   color: #ff4444;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   text-align: center;
   margin-bottom: 10px;
 }
@@ -175,3 +175,39 @@
 .btn-cancel { background:transparent; color:#ccc; border:1px solid #444; padding:8px 12px; border-radius:8px; cursor:pointer; }
 .row { display:flex; gap:12px; margin-top:6px; }
 .mensaje-error { color:#ff9aa2; background:rgba(229,57,53,0.06); padding:8px 10px; border-radius:8px; margin-top:8px; font-weight:600; }
+
+
+.modal-switch-text {
+  text-align: center;
+  margin-top: 1rem;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.modal-switch-link {
+  background: none;
+  border: none;
+  color: #c1121f;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.modal-switch-link:hover {
+  color: #e50914;
+}
+
+.btn-auto{
+ background:#222;
+ color:#fff;
+ border:1px solid #333; 
+ padding:8px 12px; 
+ border-radius:8px; 
+ cursor:pointer; 
+ transition: border 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+.btn-auto:hover{
+  border: 1px solid #c1121f;
+}

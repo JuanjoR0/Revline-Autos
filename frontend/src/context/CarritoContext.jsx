@@ -1,8 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useNotificacion } from "./NotificacionContext";
+
 
 const CarritoContext = createContext();
 
 export function CarritoProvider({ children }) {
+  const { mostrarMensaje } = useNotificacion();
+
   // 🧠 Cargar el carrito desde localStorage al iniciar
   const [carrito, setCarrito] = useState(() => {
     try {
@@ -37,16 +41,28 @@ export function CarritoProvider({ children }) {
     });
   };
 
-  // ➕➖ Cambiar cantidad
+  // Cambiar cantidad (limitado al stock)
   const cambiarCantidad = (id, cambio) => {
     setCarrito((prev) =>
-      prev.map((p) =>
-        p.id === id
-          ? { ...p, cantidad: Math.max(1, p.cantidad + cambio) }
-          : p
-      )
+      prev.map((p) => {
+        if (p.id === id) {
+          const nuevaCantidad = p.cantidad + cambio;
+
+          // 🔸 No permitir menos de 1 ni más que el stock disponible
+          if (nuevaCantidad < 1) return { ...p, cantidad: 1 };
+          if (nuevaCantidad > p.stock) {
+            // Mostrar notificación si se intenta pasar el stock
+            mostrarMensaje?.(`Solo quedan ${p.stock} unidades disponibles`, "error");
+            return { ...p, cantidad: p.stock };
+          }
+
+          return { ...p, cantidad: nuevaCantidad };
+        }
+        return p;
+      })
     );
   };
+
 
   // ❌ Eliminar producto
   const eliminarProducto = (id) => {

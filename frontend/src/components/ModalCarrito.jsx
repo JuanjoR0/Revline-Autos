@@ -2,9 +2,13 @@ import "../styles/modal.css";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCarrito } from "../context/CarritoContext";
+import { useNotificacion } from "../context/NotificacionContext";
+
 
 export default function ModalCarrito({ isOpen, onClose, producto }) {
   const { agregarProducto } = useCarrito();
+  const { mostrarMensaje } = useNotificacion();
+
 
   // Bloquear scroll del body mientras el modal está abierto
   useEffect(() => {
@@ -18,6 +22,7 @@ export default function ModalCarrito({ isOpen, onClose, producto }) {
 
   const handleAddToCart = () => {
     agregarProducto(producto, 1); // siempre añade 1 unidad
+    mostrarMensaje("Producto añadido al carrito ✅", "exito");
     onClose();
   };
 

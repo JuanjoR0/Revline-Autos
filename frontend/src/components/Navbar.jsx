@@ -1,15 +1,20 @@
 import { NavLink, useNavigate  } from "react-router-dom";
 import Logo from "../assets/Logo.png";
-import carrito from "../assets/carrito-de-compras.png";
+import carritoImg from "../assets/carrito-de-compras.png";
 import cerrarSesion from "../assets/cerrar-sesion.png";
+import imgPerfil from "../assets/usuario.png";
 import Modal from "./Modal";
 import "../styles/modal.css";
 import { useState, useEffect } from "react";
 import { api } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { useCarrito } from "../context/CarritoContext";
+
+
 
 export default function Navbar() {
   const { usuario, setUsuario, loginOpen, setLoginOpen, registroOpen, setRegistroOpen, handleLogout  } = useAuth();
+  const { carrito } = useCarrito();
   const [mensajeError, setMensajeError] = useState("");
   const [loginSubmitted, setLoginSubmitted] = useState(false);
   const [registroSubmitted, setRegistroSubmitted] = useState(false);
@@ -88,17 +93,29 @@ export default function Navbar() {
     }
 
     try {
-      await api.post("registro/", { nombre, email, password });
-      alert("Registro completado. Ahora puedes iniciar sesión.");
+      const res = await api.post("registro/", { nombre, email, password });
+
+      // 🔹 Una vez registrado, iniciar sesión automáticamente
+      const loginRes = await api.post("login/", { email, password });
+
+      if (loginRes.data && loginRes.data.usuario) {
+        localStorage.setItem("token", loginRes.data.access);
+        localStorage.setItem("usuario", JSON.stringify(loginRes.data.usuario));
+        setUsuario(loginRes.data.usuario);
+      }
+
+      // 🔹 Cierra el modal de registro
       setRegistroOpen(false);
       setRegistroSubmitted(false);
-    } catch (err) {
-      if (err.response?.status === 409) {
-        setMensajeError("Este correo ya está registrado. Inicia sesión en su lugar.");
-      } else {
-        setMensajeError("Error al registrar usuario. Inténtalo de nuevo.");
+      setMensajeError("");
+      } catch (err) {
+        if (err.response?.status === 409) {
+          setMensajeError("Este correo ya está registrado. Inicia sesión en su lugar.");
+        } else {
+          setMensajeError("Error al registrar usuario. Inténtalo de nuevo.");
+        }
       }
-    }
+
   };
 
   // 🧹 Limpiar mensajes y estados al cerrar modales
@@ -124,7 +141,6 @@ export default function Navbar() {
           <NavLink to="/" className={({ isActive }) => (isActive ? "activo" : "")}>Inicio</NavLink>
           <NavLink to="/tienda" className={({ isActive }) => (isActive ? "activo" : "")}>Tienda</NavLink>
           <NavLink to="/contacto" className={({ isActive }) => (isActive ? "activo" : "")}>Contacto</NavLink>
-          <NavLink to="/blog" className={({ isActive }) => (isActive ? "activo" : "")}>Blog</NavLink>
           {usuario?.rol === "cliente" && <NavLink to="/pedidos" className={({ isActive }) => (isActive ? "activo link-pedidos" : "link-pedidos")}>Mis pedidos</NavLink>}
           {usuario?.rol === "administrador" && (<a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener noreferrer" className="admin-link">Administración</a>)}
         </nav>
@@ -138,11 +154,18 @@ export default function Navbar() {
             </>
           ) : (
             <div className="navbar-user">
-              <img src={usuario.imagen_perfil && usuario.imagen_perfil !== "" ? `${import.meta.env.VITE_API_URL}${usuario.imagen_perfil}` : "/usuario.png"} alt="Perfil" className="navbar-avatar"/>
-              <span className="usuario-nombre">{usuario.username || "Usuario"}</span>
-              <NavLink to="/carrito">
-                <img src={carrito} alt="Carrito" className="icono-carrito" />
+              <img src={imgPerfil} alt="Perfil" className="navbar-avatar"/>
+              <span className="usuario-nombre">{usuario.nombre || "Usuario"}</span>
+              <NavLink to="/carrito" className="carrito-wrapper">
+                <img src={carritoImg} alt="Carrito" className="icono-carrito" />
+                {carrito.length > 0 && (
+                  <span className="carrito-count">
+                    {carrito.reduce((total, p) => total + p.cantidad, 0)}
+                  </span>
+                )}
               </NavLink>
+
+
               <button className="btn-logout" onClick={handleLogoutClick}>
                 <img src={cerrarSesion} alt="Cerrar sesión" className="icono-logout" />
               </button>
@@ -160,6 +183,9 @@ export default function Navbar() {
           <input type="password" name="password" placeholder="Contraseña" autoComplete="new-password" />
           <button type="submit">Entrar</button>
         </form>
+         <p className="modal-switch-text"> ¿No tienes cuenta aún?{" "}
+          <button type="button" className="modal-switch-link" onClick={() => {setLoginOpen(false); setRegistroOpen(true);}}>Regístrate aquí</button>
+         </p>
       </Modal>
 
       {/* MODAL REGISTRO */}
@@ -172,6 +198,9 @@ export default function Navbar() {
           <input type="password" placeholder="Contraseña" autoComplete="new-password" />
           <button type="submit">Registrar</button>
         </form>
+        <p className="modal-switch-text">¿Ya tienes una cuenta?{" "}
+          <button type="button"className="modal-switch-link"onClick={() => {setRegistroOpen(false);setLoginOpen(true);}}>Inicia sesión aquí</button>
+        </p>
       </Modal>
     </header>
   );

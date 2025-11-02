@@ -3,7 +3,6 @@ import { api } from "../api/axios";
 import TarjetaVehiculo from "../components/TarjetaVehiculo";
 import "../styles/tienda.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
 
 export default function Tienda() {
   const [vehiculos, setVehiculos] = useState([]);
@@ -24,7 +23,6 @@ export default function Tienda() {
     turismos: "coche",
     motos: "moto",
     especiales: "especial",
-    aereos: "aereo",
   };
 
   // 🔎 Filtrado avanzado (categoría + búsqueda) con mapeo correcto
@@ -43,7 +41,6 @@ export default function Tienda() {
       turismos: "coche",
       motos: "moto",
       especiales: "especial",
-      aereos: "aereo",
     };
 
     const tipoSeleccionado = mapaCategorias[filtroCategoria];
@@ -72,7 +69,7 @@ export default function Tienda() {
           {/* 🔻 SUBMENÚ Y BUSCADOR (DISEÑO ORIGINAL) */}
           <div className="submenu-tienda">
             <div className="categorias">
-              {["todos", "turismos", "motos", "especiales", "aereos"].map(
+              {["todos", "turismos", "motos", "especiales"].map(
                 (categoria) => (
                   <button
                     key={categoria}
