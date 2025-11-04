@@ -287,3 +287,12 @@ Validaciones y funcionalidades:
 - Si se elimina un producto o se vacía el carrito, se actualiza automáticamente tanto en la vista como en localStorage.
 - Si el usuario completa un pedido , se muestra un toast 'Pedido realizado correctamente'.
 - Validación visual (borde rojo/verde) en campos de formularios.
+- Si el usuario tiene un producto ya añadido al carrito no puede volver a añadirlo, aparece un toast indicativo.
+- Cada usuario tiene su propio carrito independiente, guardado en localStorage.
+- Si el usuario cierra sesión y luego vuelve a iniciar, recupera su carrito anterior.
+
+Cómo funciona;
+El index.html forma el esqueleto de toda la app , este va a contener main.jsx, que es el motor de arranque de la app.
+A su vez main.jsx va a contener App.jsx, que es el componente raiz que renderiza todas las páginas y componentes de la web.
+
+index.html  →  main.jsx  →  App.jsx  →  componentes/páginas

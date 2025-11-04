@@ -1,8 +1,4 @@
 
-REVLINE AUTOS — GUÍA COMPLETA (Django + React en un único despliegue en Render)
-Autor: Juan José Rodríguez Ortega
-Año: 2025
-
 ──────────────────────────────────────────────────────────────────────────────
 0) REQUISITOS PREVIOS
 ──────────────────────────────────────────────────────────────────────────────

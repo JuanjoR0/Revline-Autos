@@ -9,7 +9,7 @@
   color: #fff;
   background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-left: 6px solid #31d642; /* verde para éxito */
+  border-left: 6px solid #31d642;
   padding: 12px 20px;
   border-radius: 10px;
   font-weight: 600;
@@ -36,7 +36,6 @@
   font-size: 0.95rem;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -55,7 +54,6 @@
   }
 }
 
-/* Tipos de mensaje (colores alternativos) */
 .toast.exito {
   border-left-color: #31d642;
 }
@@ -63,3 +61,5 @@
 .toast.error {
   border-left-color: #c1121f;
 }
+
+/* LIMPIO */

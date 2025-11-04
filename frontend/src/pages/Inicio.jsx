@@ -17,45 +17,27 @@ export default function Inicio() {
       <section className="hero" style={{ backgroundImage: `url(${heroImg})` }}>
         <div className="hero-overlay" />
         <div className="hero-container">
-          {/* Columna izquierda */}
           <div className="hero-content">
-            <h1>
-              Bienvenido a <span>Revline Autos.</span>
-            </h1>
-            <p>
-            Tu tienda especializada en colección de vehiculos del mundo de Grand Theft Auto.
-            </p>
+            <h1>Bienvenido a <span>Revline Autos.</span></h1>
+            <p>Tu tienda especializada en colección de vehiculos del mundo de Grand Theft Auto.</p>
             <p> Ofrecemos productos de la más alta calidad, pensados para profesionales y entusiastas del coleccionismo.
               Presentando una amplia gama de vehículos de todo tipo.</p>
             <div className="hero-buttons">
-              <Link to="/tienda" className="btn-primary">Ver Vehículos</Link>
-              <Link to="/contacto" className="btn-secondary">Contáctanos</Link>
+              <Link to="/tienda" className="btn-ver">Ver Vehículos</Link>
+              <Link to="/contacto" className="btn-contacto">Contáctanos</Link>
             </div>
 
             <div className="hero-stats">
-              <div>
-                <h3>+150</h3>
-                <p>Modelos de Autos</p>
-              </div>
-              <div>
-                <h3>+50</h3>
-                <p>Accesorios Premium</p>
-              </div>
-              <div>
-                <h3>24/7</h3>
-                <p>Soporte y Asistencia</p>
-              </div>
+              <div><h3>+150</h3><p>Modelos de Autos</p></div>
+              <div><h3>+50</h3><p>Accesorios Premium</p></div>
+              <div><h3>24/7</h3><p>Soporte y Asistencia</p></div>
             </div>
           </div>
 
-          {/* section advertencia */}
           <div className="advertencia">
             <h3>Advertencia</h3>
-            <p>
-              Esta es una web ficticia creada con fines educativos y de demostración. 
-              No introduzcas datos reales como contraseñas, correos ni información personal.
-            </p>
-
+            <p>Esta es una web ficticia creada con fines educativos y de demostración. 
+              No introduzcas datos reales como contraseñas, correos ni información personal.</p>
           </div>
         </div>
       </section>
@@ -85,56 +67,42 @@ export default function Inicio() {
       
       <section className="sobre-nosotros">
         <div className="sobre-contenido">
-          {/* Imagen izquierda */}
           <div className="sobre-imagen">
             <img src={sobreNosotrosImg} alt="Sobre nosotros" />
           </div>
 
-          {/* Contenedor derecho con barra y texto */}
           <div className="sobre-derecha">
             <div className="barra-neon"></div>
-
             <div className="sobre-texto">
               <h2>Sobre Nosotros</h2>
-              <p>
-                En Revline Autos llevamos años ofreciendo vehículos de alto rendimiento a clientes exigentes.
+              <p>En Revline Autos llevamos años ofreciendo vehículos de alto rendimiento a clientes exigentes.
                 Nuestra pasión por la velocidad, la ingeniería y el diseño nos impulsa a seleccionar solo los
-                mejores modelos del mercado.
-              </p>
-              <p>
-                Nos enorgullece combinar tecnología avanzada con atención personalizada,
-                brindando una experiencia única desde la elección del coche hasta su entrega.
-              </p>
+                mejores modelos del mercado.</p>
+              <p> Nos enorgullece combinar tecnología avanzada con atención personalizada,
+                brindando una experiencia única desde la elección del coche hasta su entrega.</p>
 
-              <Link to="/tienda" className="btn-primary ver-catalogo">
-                Ver catálogo de vehículos
-              </Link>
+              <Link to="/tienda" className="btn-ver ver-catalogo">Ver catálogo de vehículos</Link>
               </div>
           </div>
         </div>
       </section>
 
-
-
-
-
-      
       <section className="vehiculos">
         <h2>Marcas Destacadas</h2>
         <div className="vehiculos-grid">
-          <div className="vehiculo-card">
+          <div className="marca">
             <img src={bmw} alt="BMW" />
             <h3>Grotti</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="marca">
             <img src={audi} alt="Audi" />
             <h3>Übermacht</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="marca">
             <img src={mercedes} alt="Mercedes-Benz" />
             <h3>Pegassi</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="marca">
             <img src={lamborghini} alt="Lamborghini" />
             <h3>Pfister</h3>
           </div>
@@ -145,3 +113,5 @@ export default function Inicio() {
     
   );
 }
+
+// LIMPIO

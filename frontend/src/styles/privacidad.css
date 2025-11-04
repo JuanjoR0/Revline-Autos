@@ -1,9 +1,9 @@
 .politica-container {
   position: relative;
-  width: 100vw; /* ocupa toda la pantalla */
+  width: 100vw; 
   left: 50%;
   right: 50%;
-  margin-left: -50vw; /* rompe el ancho del contenedor padre */
+  margin-left: -50vw; /* rompe el ancho del contenedor padre para salirse del max widht */
   margin-right: -50vw;
   min-height: 100vh;
   background: url("../assets/hero2.png") center/cover no-repeat fixed;
@@ -28,7 +28,6 @@
   background: #1a1a1a;
 }
 
-
 .politica-titulo {
   font-size: 2.5rem;
   margin-bottom: 20px;
@@ -37,7 +36,7 @@
 }
 
 .politica-intro {
-  
+
   color: #bbb;
   font-size: 1.1rem;
   margin-bottom: 40px;
@@ -74,3 +73,5 @@ a:hover {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
 }
+
+/* LIMPIO */

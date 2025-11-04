@@ -6,17 +6,14 @@ import Logo from "../assets/Logo.png";
 export default function Footer() {
   return (
     <footer className="footer">
-      {/* 🔹 Parte superior con imagen */}
       <div className="footer-top">
         <div className="footer-overlay">
           <div className="footer-content container">
 
-            {/* 🏁 LOGO */}
             <div className="footer-section logo-area">
               <img src={Logo} alt="RevLine Autos Logo" className="footer-logo" />
             </div>
 
-            {/* 🔗 Enlaces */}
             <div className="footer-section enlaces">
               <ul>
                 <li><NavLink to="/">Inicio</NavLink></li>
@@ -26,7 +23,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* 🌐 Redes sociales */}
             <div className="footer-section redes">
               <div className="social-icons">
                 <a href="#"><FaInstagram /></a>
@@ -39,10 +35,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* 🔸 Parte inferior negra */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} RevLine Autos — Desarrollado por Juan José Rodríguez Ortega</p>
+        <p>© 2025 RevLine Autos — Desarrollado por Juan José Rodríguez Ortega</p>
       </div>
     </footer>
   );
 }
+
+//LIMPIO

@@ -5,11 +5,11 @@ import "../styles/tienda.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Tienda() {
-  const [vehiculos, setVehiculos] = useState([]);
-  const [filtroCategoria, setFiltroCategoria] = useState("todos");
-  const [busqueda, setBusqueda] = useState("");
+  const [vehiculos, setVehiculos] = useState([]); //Guarda la lista de vehículos que recibe en la peticion al backend
+  const [filtroCategoria, setFiltroCategoria] = useState("todos"); //Guarda la categoría actualmente seleccionada en la tienda.
+  const [busqueda, setBusqueda] = useState(""); //Guarda el texto que el usuario escribe en el buscador
 
-  // 🧠 Cargar los vehículos desde el backend
+  //Realizamos peticion GET de los vehículos al backend
   useEffect(() => {
     api
       .get("vehiculos/")
@@ -17,23 +17,10 @@ export default function Tienda() {
       .catch((err) => console.error("Error al cargar vehículos:", err));
   }, []);
 
-  // 🧩 Mapeo entre texto del botón y valor real del tipo
-  const mapaCategorias = {
-    todos: "todos",
-    turismos: "coche",
-    motos: "moto",
-    especiales: "especial",
-  };
-
-  // 🔎 Filtrado avanzado (categoría + búsqueda) con mapeo correcto
+  // Creamos funcion que nos devuelva un array de vehiculos filtrados por (categoría + búsqueda)
   const vehiculosFiltrados = vehiculos.filter((v) => {
     const normalize = (str) =>
-      (str || "")
-        .toString()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
+      (str || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
     // Mapa entre el botón del submenú y el valor que llega en v.tipo desde Django
     const mapaCategorias = {
@@ -46,18 +33,13 @@ export default function Tienda() {
     const tipoSeleccionado = mapaCategorias[filtroCategoria];
 
     // Coincidencia de categoría (si hay tipo seleccionado)
-    const coincideCategoria =
-      !tipoSeleccionado || normalize(v.tipo) === normalize(tipoSeleccionado);
+    const coincideCategoria = !tipoSeleccionado || normalize(v.tipo) === normalize(tipoSeleccionado);
 
     // Coincidencia de búsqueda (nombre, marca o tipo)
     const q = normalize(busqueda);
-    const coincideBusqueda =
-      !q ||
-      normalize(v.nombre).includes(q) ||
-      normalize(v.marca).includes(q) ||
-      normalize(v.tipo).includes(q);
+    const coincideBusqueda = !q ||normalize(v.nombre).includes(q) ||normalize(v.marca).includes(q) ||normalize(v.tipo).includes(q);
 
-    return coincideCategoria && coincideBusqueda;
+    return coincideCategoria && coincideBusqueda; //si cumple ambas condiciones, el vehiculo se incluye en el resultado
   });
 
 
@@ -66,18 +48,11 @@ export default function Tienda() {
       <div className="tienda-overlay">
         <div className="tienda-contenedor">
 
-          {/* 🔻 SUBMENÚ Y BUSCADOR (DISEÑO ORIGINAL) */}
           <div className="submenu-tienda">
             <div className="categorias">
               {["todos", "turismos", "motos", "especiales"].map(
                 (categoria) => (
-                  <button
-                    key={categoria}
-                    className={`categoria-btn ${
-                      filtroCategoria === categoria ? "activo" : ""
-                    }`}
-                    onClick={() => setFiltroCategoria(categoria)}
-                  >
+                  <button key={categoria} className={`categoria-btn ${filtroCategoria === categoria ? "activo" : ""}`} onClick={() => setFiltroCategoria(categoria)}>
                     {categoria.charAt(0).toUpperCase() + categoria.slice(1)}
                   </button>
                 )
@@ -85,16 +60,10 @@ export default function Tienda() {
             </div>
 
             <div className="buscador">
-              <input
-                type="text"
-                placeholder="Buscar vehículo..."
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
+              <input type="text" placeholder="Buscar vehículo..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
             </div>
           </div>
 
-          {/* 🔻 GRID DE VEHÍCULOS CON ANIMACIÓN */}
           <div className="tienda-grid">
             <AnimatePresence mode="wait">
               {vehiculosFiltrados.length > 0 ? (
@@ -127,3 +96,6 @@ export default function Tienda() {
     </div>
   );
 }
+
+
+// LIMPIO

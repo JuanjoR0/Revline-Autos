@@ -1,11 +1,11 @@
 import "../styles/carrito.css";
 import { useCarrito } from "../context/CarritoContext";
 import CheckoutModal from "../components/CheckoutModal";
-import { useState } from "react";
+import { useState } from "react"; //esto permite guardar y controlar el estado de un componente para que este se actualice dinamicamente cuando hay algun cambio
 
 export default function Carrito() {
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const { carrito, cambiarCantidad, eliminarProducto, vaciarCarrito } = useCarrito();
+  const [checkoutOpen, setCheckoutOpen] = useState(false); //controla si el checkout está abierto o cerrado, se inicializa en cerrado
+  const { carrito, cambiarCantidad, eliminarProducto } = useCarrito();
   const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 
   return (
@@ -17,7 +17,7 @@ export default function Carrito() {
       ) : (
         <>
           <div className="carrito-lista">
-            {carrito.map((p) => (
+            {carrito.map((p) => ( //recorre el array carrito y generamos un componente por cada elemento que tiene
               <div className="carrito-item" key={p.id}>
                 <img src={p.imagen} alt={p.nombre} className="carrito-img" />
                 <div className="carrito-detalles">
@@ -44,9 +44,12 @@ export default function Carrito() {
             <p className="total">Total: $<strong>{total.toLocaleString()}</strong></p>
             <button className="btn-comprar" onClick={() => setCheckoutOpen(true)} disabled={carrito.length===0}>Realizar compra</button>
           </div>
-          <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+          <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} /> {/* Modal para realizar un pedido */}
         </>
       )}
     </div>
   );
 }
+
+
+// LIMPIO

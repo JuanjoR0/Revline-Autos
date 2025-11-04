@@ -1,10 +1,9 @@
 .pedidos-container {
-  min-height: calc(100vh - 160px); /* resta header + footer */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-bottom: 2rem; /* deja aire antes del footer */
-  min-height: 94vh;
+  padding-bottom: 2rem; 
+  min-height: 100vh;
 }
 .pedidos-filtros {
   margin-top: 120px;
@@ -45,7 +44,6 @@
   box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
   transform: translateY(-1px);
 }
-
 
 .lista-pedidos {
   display: flex;
@@ -88,7 +86,6 @@
   margin-right: 15px;
 }
 
-/* 🔘 Fecha centrada */
 .pedido-header .fecha {
   position: absolute;
   left: 50%;
@@ -97,7 +94,6 @@
   font-size: 0.9rem;
 }
 
-/* 🔴 Botón en la derecha */
 .btn-recibir-header {
   background: #e50914;
   color: white;
@@ -114,8 +110,6 @@
   transform: scale(1.05);
 }
 
-
-
 .pedido-contenido {
   display: flex;
   justify-content: space-between;
@@ -123,7 +117,6 @@
   gap: 2rem;
 }
 
-/* 🏎️ Detalles del pedido */
 .pedido-detalles {
   flex: 1;
   display: flex;
@@ -147,7 +140,6 @@
   border-radius: 8px;
 }
 
-
 .detalle-nombre {
   font-weight: bold;
   color: #fff;
@@ -160,7 +152,6 @@
   font-size: 0.9rem;
 }
 
-/* 📦 Info del pedido */
 .pedido-info {
   flex: 1;
   background: #1a1a1a;
@@ -173,7 +164,6 @@
   color: #fff;
 }
 
-/* 🔝 Estado arriba a la derecha */
 .estado-badge {
   padding: 0.2rem 1rem;
   border-radius: 8px;
@@ -181,8 +171,6 @@
   text-transform: capitalize;
   font-size: 0.9rem;
 }
-
-
 
 .estado-badge.pendiente {
   background: #ffae00;
@@ -197,3 +185,5 @@
 .alinear{
   display: flex;
 }
+
+/* LIMPIO */

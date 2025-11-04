@@ -1,12 +1,12 @@
+//este es el contenido del modal para añadir al carrito
 import "../styles/modal.css";
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
+import { createPortal } from "react-dom";  //sirve para renderizar un componente fuera del DOM.
 import { useCarrito } from "../context/CarritoContext";
 import { useNotificacion } from "../context/NotificacionContext";
 
-
 export default function ModalCarrito({ isOpen, onClose, producto }) {
-  const { agregarProducto } = useCarrito();
+  const { carrito,agregarProducto } = useCarrito();
   const { mostrarMensaje } = useNotificacion();
 
 
@@ -20,10 +20,14 @@ export default function ModalCarrito({ isOpen, onClose, producto }) {
 
   if (!isOpen) return null;
 
-  const handleAddToCart = () => {
-    agregarProducto(producto, 1); // siempre añade 1 unidad
-    mostrarMensaje("Producto añadido al carrito ✅", "exito");
-    onClose();
+  // Verificar si el producto ya está en el carrito
+  const yaEnCarrito = carrito.some((p) => p.id === producto.id);
+
+  //se ejecuta cuando se hace clic en “Añadir al carrito”
+  const añadirAlCarrito = () => {
+    agregarProducto(producto, 1); // Añade el producto siempre en 1 unidad
+    mostrarMensaje("Producto añadido al carrito correctamente", "exito"); //muestra un mensaje de confirmación
+    onClose(); //y cierra la ventana del producto
   };
 
   return createPortal(
@@ -31,10 +35,14 @@ export default function ModalCarrito({ isOpen, onClose, producto }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2>Añadir al carrito</h2>
-        <p>{producto ? `¿Deseas añadir "${producto.nombre}" al carrito?` : "¿Deseas añadir este producto al carrito?"}</p>
-        <div className="modal-actions"><button className="btn-cancelar" onClick={onClose}>Cancelar</button><button className="btn-confirmar" onClick={handleAddToCart}>Añadir al carrito</button></div>
+        <p>{yaEnCarrito? "Este producto ya se ha añadido al carrito. Controla desde ahí la cantidad." : `¿Deseas añadir un ${producto.nombre} al carrito?`}</p>
+        <div className="modal-actions"><button className="btn-cancelar" onClick={onClose}>Cancelar</button>
+          <button className="btn-confirmar" onClick={añadirAlCarrito} disabled={yaEnCarrito} style={yaEnCarrito ? { backgroundColor: "#444", cursor: "not-allowed", opacity: 0.7 } : {}}>Añadir al carrito</button>
+        </div>
       </div>
     </div>,
     document.body
   );
 }
+
+//LIMPIO
