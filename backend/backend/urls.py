@@ -21,10 +21,11 @@ if settings.DEBUG:
 
 # Servir archivos estáticos generados por Vite (JS, CSS, imágenes)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static('/assets/', document_root=settings.BASE_DIR / 'frontend_dist/assets')
 
 # Esta línea es clave para que el frontend React funcione con Django
 urlpatterns += [ # Literalmente dice, si la ruta no empieza con /api/, /admin/ o /media/, entonces carga el archivo index.html del frontend.
-    re_path(r'^(?!api/|admin/|media/).*$', TemplateView.as_view(template_name='index.html')),
+    re_path(r'^(?!api/|admin/|media/|static/|assets/).*$', TemplateView.as_view(template_name='index.html')),
 ]                # Esto permite que React maneje sus propias rutas sin que Django dé error 404 al recargar la página.
 
 
