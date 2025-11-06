@@ -261,14 +261,8 @@
 --- PASO 17 (Despliegue en RENDER) ---
 75. En render iniciamos sesion con GitHub para conectar la cuenta.
 76. Creamos un nuevo Web-Service y elegimos el proyecto RevLine Autos
-77. En el campo Root Directory debemos poner "." 
-78. En el campo Build Command debemos introducir todo esto;     pip install -r requirements.txt && \
-                                                                npm --prefix frontend ci || npm --prefix frontend install && \
-                                                                npm --prefix frontend run build && \
-                                                                rm -rf backend/frontend_dist && mkdir -p backend/frontend_dist && \
-                                                                cp -R frontend/dist/* backend/frontend_dist/ && \
-                                                                python backend/manage.py collectstatic --noinput && \
-                                                                python backend/manage.py migrate --noinput
+77. En el campo Root Directory debemos poner "backend" 
+78. En el campo Build Command debemos introducir todo esto;     pip install -r ../requirements.txt && cd ../frontend && npm install && npm run build && cd .. && rm -rf backend/frontend_dist && mkdir -p backend/frontend_dist && cp -R frontend/dist/* backend/frontend_dist/ && python backend/manage.py collectstatic --noinput && python backend/manage.py migrate --noinput
 79. En el campo start command debemos poner;    gunicorn backend.wsgi:application
 80. En render creamos una base de datos Postgres.
 81. Al web service Revline-Autos le daremos las siguientes variables de entorno;
@@ -279,8 +273,7 @@
         SECRET_KEY	        ckcr!2$r=4#8!$oumd-#_^tvwx0$_83!-g_1z4j3vp#y^nud4q	                Es la clave secreta que usa Django para seguridad (firmas, sesiones, etc.).
         DEBUG	                              False	                                                Desactiva el modo desarrollo en producción.
         ALLOWED_HOSTS	                 .onrender.com	                                                Permite que tu proyecto se ejecute desde la URL pública de Render.
-        DJANGO_SETTINGS_MODULE	         backend.settings	                                        Le indica a Render qué archivo de configuración usar.
+        DJANGO_SETTINGS_MODULE	         backend.backend.settings	                                        Le indica a Render qué archivo de configuración usar.
         PYTHONUNBUFFERED	                1	                                                Asegura que los logs de Django se muestren correctamente.
         CORS_ALLOWED_ORIGINS	        http://localhost:5173                                                   Para seguir desarrollando localmente
         CSRF_TRUSTED_ORIGINS	        http://localhost:5173                                                   Para seguir desarrollando localmente
-82. 

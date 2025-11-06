@@ -135,7 +135,7 @@ export default function Navbar() {
           <NavLink to="/tienda" className={({ isActive }) => (isActive ? "activo" : "")}>Tienda</NavLink>
           <NavLink to="/contacto" className={({ isActive }) => (isActive ? "activo" : "")}>Contacto</NavLink>
           {usuario?.rol === "cliente" && <NavLink to="/pedidos" className={({ isActive }) => (isActive ? "activo link-pedidos" : "link-pedidos")}>Mis pedidos</NavLink>}
-          {usuario?.rol === "administrador" && (<a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener noreferrer" className="admin-link">Administración</a>)}
+          {usuario?.rol === "administrador" && (<a href="https://revline-autos.onrender.com/admin/" target="_blank" rel="noopener noreferrer" className="admin-link">Administración</a>)}
         </nav> {/*  Los enlaces de “Mis pedidos” o “Administración” solo se muestran si el usuario tiene el rol correcto.  */}
 
         <div className="navbar-login">
