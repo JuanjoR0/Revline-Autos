@@ -205,5 +205,3 @@ export default function CheckoutModal({ isOpen, onClose }) {
   );
 }
 
-
-//LIMPIO

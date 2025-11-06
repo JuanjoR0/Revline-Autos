@@ -63,4 +63,3 @@ export default function TarjetaVehiculo({ vehiculo }) {
   );
 }
 
-//LIMPIO

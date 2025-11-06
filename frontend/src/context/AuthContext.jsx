@@ -47,5 +47,3 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-
-//LIMPIO

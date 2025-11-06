@@ -23,5 +23,3 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
 )
 
-
-//LIMPIO

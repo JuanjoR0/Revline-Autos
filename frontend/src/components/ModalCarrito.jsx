@@ -45,4 +45,3 @@ export default function ModalCarrito({ isOpen, onClose, producto }) {
   );
 }
 
-//LIMPIO
