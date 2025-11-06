@@ -13,8 +13,7 @@ if not Usuario.objects.filter(email="admin@revlineautos.com").exists():
         email="admin@revlineautos.com",
         password="12345678", 
         nombre="Admin",
-        apellidos="Revline"
     )
-    print("✅ Superusuario creado correctamente.")
+    print("Superusuario creado correctamente.")
 else:
-    print("⚠️ El superusuario ya existe.")
+    print("El superusuario ya existe.")
