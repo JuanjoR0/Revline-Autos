@@ -13,8 +13,8 @@ SECRET_KEY = 'django-insecure-4(e6z4tcwxqt+9jfwgpjaqj#!t896d5*$+ton*41id$*v=ie$_
 #Django muestra los errores en pantalla. EN ENTORNO DE PRODUCCION REAL DEBERÍA ETSAR EN FALSE
 DEBUG = True
 
-#lista de dominios que pueden acceder al servidor. Al ser un proyecto de estudio se deja vacío pero en producción real se pondrían dominios reales.
-ALLOWED_HOSTS = []
+#lista de dominios que pueden acceder al servidor.
+ALLOWED_HOSTS = ["revline-autos.onrender.com", "localhost", "127.0.0.1"]
 
 #Estas son las apps que Django carga automáticamente cuando arranca el proyecto
 INSTALLED_APPS = [
@@ -108,9 +108,11 @@ REST_FRAMEWORK = { #Configura Django REST Framework
 # Permitir cookies y credenciales entre frontend y backend para que se puedan comunicar
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [ #lista de dominios permitidos.
+    "https://revline-autos.onrender.com",
     "http://localhost:5173",
 ]
 CSRF_TRUSTED_ORIGINS = [ #dominios confiables para evitar errores CSRF.
+    "https://revline-autos.onrender.com",
     "http://localhost:5173",
 ]
 
