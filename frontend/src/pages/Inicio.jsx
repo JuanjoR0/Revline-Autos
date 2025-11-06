@@ -8,7 +8,7 @@ import bmw from "../assets/marca1.png";
 import audi from "../assets/marca2.png";
 import mercedes from "../assets/marca3.png";
 import lamborghini from "../assets/marca4.png";
-import "../styles/Inicio.css";
+import "../styles/inicio.css";
 import { Link } from "react-router-dom";
 
 export default function Inicio() {
