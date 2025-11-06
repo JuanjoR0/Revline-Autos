@@ -86,6 +86,7 @@ USE_TZ = True    #almacena las fechas en UTC internamente.
 
 STATIC_URL = '/static/'   #ruta donde se sirven archivos CSS, JS, imágenes estáticas.
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist/assets' ]
 
 MEDIA_URL = '/media/'  #ruta para archivos subidos por usuarios.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  #carpeta donde se almacenan esos archivos.

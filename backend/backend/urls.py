@@ -19,6 +19,9 @@ urlpatterns = [ #Esto crea las rutas principales del backend
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# Servir archivos estáticos generados por Vite (JS, CSS, imágenes)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 # Esta línea es clave para que el frontend React funcione con Django
 urlpatterns += [ # Literalmente dice, si la ruta no empieza con /api/, /admin/ o /media/, entonces carga el archivo index.html del frontend.
     re_path(r'^(?!api/|admin/|media/).*$', TemplateView.as_view(template_name='index.html')),
