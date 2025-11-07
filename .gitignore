@@ -7,7 +7,6 @@ venv/
 
 # Django
 /staticfiles/
-media/
 
 # React / Node
 frontend/node_modules/

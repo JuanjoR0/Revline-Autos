@@ -231,6 +231,14 @@ p {
   color: #e4e4e4;
 }
 
+.vehiculo-card {
+  transition: transform 0.2s ease;
+}
+
+.vehiculo-card:hover {
+  transform: scale(1.05);
+}
+
 /* sobre nosotros */
 .sobre-nosotros {
   position: relative;

@@ -10,8 +10,16 @@ import mercedes from "../assets/marca3.png";
 import lamborghini from "../assets/marca4.png";
 import "../styles/inicio.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Inicio() {
+   const navigate = useNavigate();
+
+  // función para redirigir con el filtro aplicado
+  const irATienda = (tipo) => {
+    navigate(`/tienda?categoria=${tipo}`);
+  };
+
   return (
     <section>
       <section className="hero" style={{ backgroundImage: `url(${heroImg})` }}>
@@ -45,19 +53,19 @@ export default function Inicio() {
       <section className="vehiculos">
         <h2>Nuestros Vehículos</h2>
         <div className="vehiculos-grid">
-          <div className="vehiculo-card">
+          <div className="vehiculo-card" onClick={() => irATienda("turismos")} style={{ cursor: "pointer" }}>
             <img src={turismo} alt="Turismos" />
             <h3>Turismos</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="vehiculo-card" onClick={() => irATienda("motos")} style={{ cursor: "pointer" }}>
             <img src={moto} alt="Motos" />
             <h3>Motos</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="vehiculo-card" onClick={() => irATienda("especiales")} style={{ cursor: "pointer" }}>
             <img src={especial} alt="Especiales" />
             <h3>Especiales</h3>
           </div>
-          <div className="vehiculo-card">
+          <div className="vehiculo-card" onClick={() => irATienda("todos")} style={{ cursor: "pointer" }}>
             <img src={aereo} alt="Especiales" />
             <h3>Aereos</h3>
           </div>

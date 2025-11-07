@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { api } from "../api/axios";
 import TarjetaVehiculo from "../components/TarjetaVehiculo";
 import "../styles/tienda.css";
@@ -41,6 +42,17 @@ export default function Tienda() {
 
     return coincideCategoria && coincideBusqueda; //si cumple ambas condiciones, el vehiculo se incluye en el resultado
   });
+
+  const [filtro, setFiltro] = useState("todos");
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const categoriaURL = params.get("categoria");
+
+  useEffect(() => { // aquí llamas a la función de navegar a la seccion con filtro de categoria
+    if (categoriaURL) {
+      setFiltro(categoriaURL.toLowerCase());
+    }
+  }, [categoriaURL]);
 
 
   return (
