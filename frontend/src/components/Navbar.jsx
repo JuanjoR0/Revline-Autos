@@ -11,7 +11,8 @@ import { api } from "../api/axios";  //conexión configurada de Axios para comun
 import { useAuth } from "../context/AuthContext"; //para usar el contexto que gestiona el usuario y el estado de login
 import { useCarrito } from "../context/CarritoContext";  //para usar el contexto global del carrito
 import "../styles/header.css";
-
+import menuIcon from "../assets/menu.png";
+import closeIcon from "../assets/cerrar.png";
 
 export default function Navbar() {
   const { usuario, setUsuario, loginOpen, setLoginOpen, registroOpen, setRegistroOpen, cerrarSesion  } = useAuth();  //almacenamos el contexto del usuario logueado
@@ -20,7 +21,21 @@ export default function Navbar() {
   const [loginSubmitted, setLoginSubmitted] = useState(false);
   const [registroSubmitted, setRegistroSubmitted] = useState(false); //Indican ambos si se ha enviado el formulario (para mostrar errores).
   const navigate = useNavigate(); //Permite redirigir a otra págin, por ejemplo al cerrar sesion
-  
+  const [menuOpen, setMenuOpen] = useState(false); //Menu hamburguesa
+
+  // Cerrar con ESC el menu hamburguesa
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // bloquear scroll cuando está abierto el menu hamburguesa
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   //Cierra sesion al hacer click en el icono de cerrar sesion
   const cerrarSesionClick = () => {
     cerrarSesion();   // Limpia el usuario y el token del localStorage
@@ -127,7 +142,7 @@ export default function Navbar() {
   }, [registroOpen]);
 
   return (
-    <header>
+    <header className={`navbar ${menuOpen ? "menu-open" : ""}`}>
       <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <a href="/"><img src={Logo} alt="Logo web" className="logo" /></a>
         <nav className="navbar-links">
@@ -163,6 +178,57 @@ export default function Navbar() {
             </div>
           )}
         </div>
+
+        {/* botón hamburguesa (solo móvil vía CSS) */}
+        <button className="navbar-toggle" aria-label="Abrir menú" aria-expanded={menuOpen} aria-controls="navbar-drawer" onClick={() => setMenuOpen((v) => !v)}>
+           <img src={menuIcon} alt="Abrir menú" />
+        </button>
+
+        {/* overlay + drawer (móvil) */}
+        <div className={`navbar-overlay ${menuOpen ? "show" : ""}`} onClick={() => setMenuOpen(false)} />
+
+        <aside id="navbar-drawer" className={`navbar-drawer ${menuOpen ? "open" : ""}`} role="dialog" aria-modal="true">
+          <div className="drawer-header">
+            <span>Usuario</span>
+            <button className="drawer-close" onClick={() => setMenuOpen(false)}>
+              <img src={closeIcon} alt="Cerrar" />
+            </button>
+          </div>
+
+          <hr />
+
+          <div className="drawer-login">
+            {!usuario ? (
+              <>
+                <button className="login-link" onClick={() => { setLoginOpen(true); setMenuOpen(false); }}>
+                  Inicio Sesión
+                </button>
+                <button className="login-link" onClick={() => { setRegistroOpen(true); setMenuOpen(false); }}>
+                  Registro
+                </button>
+              </>
+            ) : (
+              <div className="navbar-user">
+                <img src={imgPerfil} alt="Perfil" className="navbar-avatar" />
+                <span className="usuario-nombre">{usuario.nombre || "Usuario"}</span>
+
+                <NavLink to="/carrito" className="carrito-clicable" onClick={() => setMenuOpen(false)}>
+                  <img src={carritoImg} alt="Carrito" className="icono-carrito" />
+                  {carrito.length > 0 && (
+                    <span className="carrito-count">
+                      {carrito.reduce((total, p) => total + p.cantidad, 0)}
+                    </span>
+                  )}
+                </NavLink>
+
+                <button className="btn-logout" onClick={() => { cerrarSesionClick(); setMenuOpen(false); }}>
+                  <img src={cerrarSesionIcono} alt="Cerrar sesión" className="icono-logout" />
+                </button>
+              </div>
+            )}
+          </div>
+        </aside>
+
       </div>
 
       {/* se renderizan ambos modales reutilizando el mismo componente <Modal>. Cada uno tiene su formulario y errores asociados (mensajeError). */}

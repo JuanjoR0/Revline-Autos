@@ -96,3 +96,20 @@
   white-space: nowrap;
 }
 
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .footer-top {
+    height: 300px;
+  }
+  .footer-logo {
+    width: 100px;
+    margin-bottom: 0rem;
+  }
+  .footer-section ul {
+    gap: 20px;
+    font-size: 0.8rem;
+  }
+  .social-icons {
+    font-size: 1rem;
+  }
+}

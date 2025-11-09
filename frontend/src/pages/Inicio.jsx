@@ -36,9 +36,9 @@ export default function Inicio() {
             </div>
 
             <div className="hero-stats">
-              <div><h3>+150</h3><p>Modelos de Autos</p></div>
-              <div><h3>+50</h3><p>Accesorios Premium</p></div>
-              <div><h3>24/7</h3><p>Soporte y Asistencia</p></div>
+              <div><h3>+150</h3><p>Modelos</p></div>
+              <div><h3>+50</h3><p>Accesorios</p></div>
+              <div><h3>24/7</h3><p>Soporte</p></div>
             </div>
           </div>
 

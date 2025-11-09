@@ -7,7 +7,7 @@ header {
   padding:  0.6rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   border-bottom: 2px solid #4b0005;
-
+}
   .logo{
     width: 80px;
   }
@@ -38,6 +38,7 @@ header {
     color: #aaa;
     margin: 5px;
   }
+  
   .navbar-login .login-link {
     background: none;
     border: none;
@@ -75,9 +76,6 @@ header {
     letter-spacing: 0.3px;
   }
   .icono-carrito {
-    width: 26px;
-    height: 26px;
-    cursor: pointer;
     margin-right: 10px;
     transition: transform 0.3s ease, filter 0.3s ease;
   }
@@ -122,5 +120,206 @@ header {
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 3px rgba(0,0,0,0.4);
+  }
+
+
+.navbar-overlay,
+.navbar-toggle,
+.navbar-drawer {
+  display: none;
+}
+
+.navbar-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  transition: transform 0.3s ease;
+  z-index: 50; /* sobre el resto */
+}
+
+.navbar-toggle:hover {
+  transform: scale(1.1);
+}
+
+.navbar-toggle img {
+  width: 30px;
+  height: 30px;
+  transition: opacity 0.3s ease;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .logo{
+    max-width: 60px;
+  }
+  nav a {
+    font-size: 0.9rem;
+    margin: 0 8px;
+  }
+  .navbar-user {
+    gap : 10px;
+  }
+  .navbar-avatar {
+    width: 30px;
+    height: 30px;
+  }
+  .usuario-nombre {
+    font-size: 0.8rem;
+  }
+  .icono-carrito {
+    width: 22px;
+    height: 22px;
+  }
+  .btn-logout img {
+    width: 20px;
+    height: 20px;
+  }
+  
+}
+
+@media (max-width: 700px) { 
+  .navbar-login{
+    display: none;
+  }
+  .navbar.menu-open .navbar-toggle {
+    display: none;
+  }
+  .navbar-toggle{
+    display: flex;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    transition: transform 0.3s ease;
+    z-index: 50;
+  }
+  .navbar-toggle:hover {
+    transform: scale(1.1);
+  }
+  .navbar-toggle img {
+    width: 30px;
+    height: 30px;
+    transition: opacity 0.3s ease;
+  }
+   .navbar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 39;
+  }
+  .navbar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+   .navbar-drawer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    max-width: 90vw;
+    height: 100vh;
+    background: #1b1b1b;
+    flex-direction: column;
+    padding: 1.2rem;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    box-shadow: -6px 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 40;
+  }
+  .navbar-drawer.open {
+    transform: translateX(0);
+  }
+  .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .drawer-header span {
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+  }
+  .drawer-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .drawer-close img {
+    width: 26px;
+    height: 26px;
+    transition: transform 0.2s ease;
+  }
+  .drawer-close:hover img {
+    transform: scale(1.1);
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 1rem 0;
+  }
+  /* Sección login dentro del drawer */
+  .drawer-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .drawer-login .login-link,
+  .drawer-login .btn-logout {
+    color: #fff;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.25s ease;
+  }
+  .drawer-login .login-link:hover,
+  .drawer-login .btn-logout:hover {
+    color: #c1121f;
+  }
+  /* Usuario dentro del drawer */
+  .drawer-login .navbar-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  .drawer-login .navbar-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .drawer-login .usuario-nombre {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 600px) { 
+    nav a {
+      font-size: 0.8rem;
+    }
+    .logo{
+      width: 80px;
+    }
+}
+
+@media (max-width: 480px) { 
+   nav a {
+    font-size: 0.60rem;
+    margin: 0 px;
+   }
+   .logo{
+    width: 50px;
   }
 }

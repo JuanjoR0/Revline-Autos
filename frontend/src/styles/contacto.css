@@ -172,4 +172,36 @@
   font-size: 0.95rem;
 }
 
+@media (max-width: 1100px) {
+  .info-contacto h2 {
+    font-size: 1.3rem;
+  }
+  .contacto-overlay h1 {
+    font-size: 2rem;
+    margin-left: 60px;
+  }
+}
 
+@media (max-width: 850px) {
+  .info-contacto h2 {
+    font-size: 1.3rem;
+  }
+  .info-contacto p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 600px) { 
+  .info-contacto h2 {
+    font-size: 1.3rem;
+  }
+  .info-contacto p {
+    font-size: 0.7rem;
+  }
+  .info-contacto {
+    gap: 0.5rem;
+  }
+  .contacto-mapa-seccion {
+    gap: 1rem;
+  }
+}
