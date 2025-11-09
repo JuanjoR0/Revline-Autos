@@ -1,4 +1,20 @@
-CÓMO FUNCIONA LA APLICACION;
+INSTRUCCIONES DE USO;
+Los usuarios cliente pueden acceder libremente a la web de RedLine Autos para navegar por las secciones de inicio,
+tienda y contacto, visualizar vehículos y consultar sus detalles sin necesidad de identificarse.
+No obstante, para poder añadir productos al carrito o realizar pedidos deben registrarse o iniciar sesión. 
+El registro se realiza desde el menú superior, proporcionando nombre, correo y contraseña, y una vez iniciada 
+la sesión, el usuario verá su nombre y avatar en la parte superior. Desde ese momento puede añadir vehículos 
+al carrito, controlar las cantidades, revisar sus pedidos desde la sección “Mis pedidos” y cerrar sesión cuando 
+lo desee. Si no se ha identificado, el sistema le avisará cuando intente realizar una acción que requiere autenticación.
+
+Los administradores, tras iniciar sesión con sus credenciales, verán habilitado un enlace adicional en el 
+menú superior que les da acceso al panel de Administración, donde pueden gestionar todo el contenido del sitio. 
+Desde este panel pueden añadir, editar o eliminar vehículos, modificar precios y stock, revisar y actualizar el 
+estado de los pedidos, así como consultar y administrar los usuarios registrados. Solo las cuentas con rol de 
+administrador pueden acceder a este panel, y se recomienda cerrar sesión tras cada uso para garantizar la seguridad 
+del sistema.
+
+EXPLICACIÓN TÉCNICA;
 
 El index.html forma el esqueleto de toda la app , este va a contener main.jsx, que es el motor de arranque de la app.
 A su vez main.jsx va a contener App.jsx, que es el componente raiz que renderiza todas las páginas y componentes de la web, 
