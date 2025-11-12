@@ -60,10 +60,10 @@ Frontend (React + Vite)
 2. npm install
 3. npm run dev
 
-VARIABLES DE ENTORNO;
-
+Para las variables de entorno:
 El proyecto incluye archivos `.env.example` tanto en el backend como en el frontend.
 Para ejecutarlo en local, copia esos archivos y renómbralos a `.env`.
+
 
 USUARIOS DE PRUEBA:
 
