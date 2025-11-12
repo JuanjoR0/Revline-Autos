@@ -6,6 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.views.static import serve
 from tienda.token_views import CustomTokenObtainPairView #Nuestra vista personalizada de login que genera tokens con más datos del usuario
 
 urlpatterns = [ #Esto crea las rutas principales del backend
@@ -17,7 +18,12 @@ urlpatterns = [ #Esto crea las rutas principales del backend
 
 # Servir archivos MEDIA (imágenes subidas)
 # Django no sirve archivos media automáticamente en producción, por eso lo activamos también fuera de DEBUG
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns += [
+        path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 
 # Servir archivos estáticos generados por Vite (JS, CSS, assets)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
