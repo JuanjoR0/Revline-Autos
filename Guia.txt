@@ -278,3 +278,7 @@
         CORS_ALLOWED_ORIGINS	        http://localhost:5173                                                   Para seguir desarrollando localmente
         CSRF_TRUSTED_ORIGINS	        http://localhost:5173                                                   Para seguir desarrollando localmente
         VITE_API_URL               https://revline-autos.onrender.com                                sin esta definicion el valor de import.meta.env.VITE_API_URL será undefined.
+
+
+FALTA:
+- Incluir imagenes, diagramas y ejemplos en el documento del proyecto a entregar.

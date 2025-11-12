@@ -1,4 +1,82 @@
+RevLine Autos – Proyecto Final de Máster
+Autor: Juan José Rodríguez Ortega  
+Año: 2025  
+Backend: Django 
+Frontend: React + Vite  
+Despliegue: Render (Django + React + PostgreSQL)
+URL: https://revline-autos.onrender.com/
+Repositorio GitHub: https://github.com/JuanjoR0/Revline-Autos
+
+ESTRUCTURA PRINCIPAL:
+
+/backend
+ ├── manage.py
+ ├── api/
+     ├── models.py
+     ├── serializers.py
+     ├── views.py
+     ├── urls.py
+     ├── admin.py
+     └── tokens.py
+ ├── back/
+     ├── settings.py
+     └── urls.py
+ ├── __init__.py
+ └── media/
+/frontend
+ ├── src/
+     ├── api/axios.js
+     ├── assets
+     ├── componentes/ .jsx
+     ├── context/ .jsx
+     ├── pages/ .jsx
+     ├── styles/ 
+     ├── App.jsx
+     └── main.jsx
+ ├── index.html
+ ├── package.json
+ └── vite.config.js
+
+
+INSTALACION Y EJECUCON EN LOCAL
+
+Backend (Django)
+1. Clonar el repositorio:
+   git clone https://github.com/JuanjoR0/Revline-Autos
+2. Entrar a la carpeta backend:
+   cd backend
+3. Crear entorno virtual e instalar dependencias:
+   python -m venv venv
+   source venv/bin/activate  (en Windows: venv\Scripts\activate)
+   pip install -r requirements.txt
+4. Aplicar migraciones y crear superusuario:
+   python manage.py migrate
+   python manage.py createsuperuser
+5. Ejecutar el servidor:
+   python manage.py runserver
+
+Frontend (React + Vite)
+1. cd frontend
+2. npm install
+3. npm run dev
+
+VARIABLES DE ENTORNO;
+
+El proyecto incluye archivos `.env.example` tanto en el backend como en el frontend.
+Para ejecutarlo en local, copia esos archivos y renómbralos a `.env`.
+
+USUARIOS DE PRUEBA:
+
+Administrador:
+- Email: admin@revlineautos.com
+- Contraseña: 12345678
+Cliente:
+- Email: juanjo@revlineautos.com
+- Contraseña: Cliente123
+
+
 INSTRUCCIONES DE USO;
+
 Los usuarios cliente pueden acceder libremente a la web de RedLine Autos para navegar por las secciones de inicio,
 tienda y contacto, visualizar vehículos y consultar sus detalles sin necesidad de identificarse.
 No obstante, para poder añadir productos al carrito o realizar pedidos deben registrarse o iniciar sesión. 
@@ -15,7 +93,6 @@ administrador pueden acceder a este panel, y se recomienda cerrar sesión tras c
 del sistema.
 
 EXPLICACIÓN TÉCNICA;
-
 El index.html forma el esqueleto de toda la app , este va a contener main.jsx, que es el motor de arranque de la app.
 A su vez main.jsx va a contener App.jsx, que es el componente raiz que renderiza todas las páginas y componentes de la web, 
 estos contienen los contextos globales que gestionan la información compartida en toda la app.
@@ -27,7 +104,25 @@ Finalmente, Django devuelve una respuesta JSON que viaja de vuelta al frontend p
 index.html  →  main.jsx  →  App.jsx  →  componentes/páginas  →  contextos globales  →  axios.js  →  API Django  → 
 urls.py  →  views.py  →  serializers.py  →  models.py  →  Base de datos
 
-Validaciones y funcionalidades:
+CONTROL DE ERRORES;
+- Mediante uso de (try/except) o (try/catch)
+- Mediante manejo de códigos HTTP en la API que lanza respuestas con los tipos de error (404, 400, 500), que el frontend React interpreta para mostrar mensajes informativos al usuario.
+- Mediante registro persistente de errores usando el sistema de logging de Django, que escribe en los logs del sistema, esto permite revisarlo mas tarde.
+
+AUTENTICACIÓN;
+- Login/Registro, React envía credenciales a Django por HTTPS.
+- Tokens/Sesión, Django devuelve un token de sesión (JWT) y establece cookies de sesión.
+- Persistimos el estado del usuario en el cliente (localstorage) y enviamos el token en el header (Authorization: Bearer)
+- Logout, limpieza de token/estado en cliente y cierre de sesión en servido
+
+SEGURIDAD;
+- Hash de contraseñas: gestionado por Django, al crear usuarios nunca guardamos contraseñas en claro ni se muestran en el panel de administracion.
+- Rutas protegidas: el frontend usa guards (React Router) para ocultar rutas de cliente autenticado y las de admin.
+- Validación de entrada: serializadores y validaciones de DRF (tipos, longitudes, required, formatos como email).
+- Códigos HTTP claros: 400/401/403/404/409/422/500
+- Consultas seguras: ORM de Django evita inyección SQL; serialización controlada evita exponer campos sensibles.
+
+MEJORAS UX/UI:
 - En un campo Email solo se puede introducir un texto en formato email.
 - En un campo Contraseña solo se puede meter texto sin espacios.
 - Si el usuario intenta iniciar sesion sin estar registrado se le dice que primero se registre.
@@ -57,8 +152,18 @@ Validaciones y funcionalidades:
 - Si el usuario cierra sesión y luego vuelve a iniciar, recupera su carrito anterior.
 
 
-EN LOCAL (Desarrollo);
-Para ejecutar el backend(Django) (python manage.py runserver)
-Para ejecutar el frontend(Vite + React) (npm run dev)
-Para generar un archivo de migracion (python manage.py makemigrations)
-Para ejecutar esa migracion (python manage.py migrate)
+
+Fuentes para la informacion; 
+- python.org
+- es.react.dev
+- Chat GPT
+- GitHub Copilot (extension VS)
+- developer.mozilla.org (para los metodos HTTP Request)
+
+
+## Créditos
+Proyecto desarrollado por Juan José Rodríguez Ortega  
+como Trabajo Final del Máster en Desarrollo Full Stack (2025).
+
+## Licencia
+Uso académico y demostrativo. No comercial.
