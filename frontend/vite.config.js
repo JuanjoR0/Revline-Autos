@@ -1,7 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
+// Ajuste para que Django sirva correctamente los assets en producción
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-})
+  base: mode === 'production' ? '/static/' : '/',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true
+  }
+}))

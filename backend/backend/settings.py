@@ -91,6 +91,9 @@ STATIC_URL = '/static/'   #ruta donde se sirven archivos CSS, JS, imágenes est�
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
 STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist/assets' ]
 
+#Para producción con WhiteNoise (cache busting)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'  #ruta para archivos subidos por usuarios.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  #carpeta donde se almacenan esos archivos.
 
