@@ -2,19 +2,22 @@
 from datetime import timedelta
 import dj_database_url, os
 from pathlib import Path
+from dotenv import load_dotenv # type: ignore
+
+load_dotenv()   # carga variables desde el archivo .env para local
 
 # Define la carpeta raíz del proyecto para construir las demás a partir de ella
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 #clave secreta que Django usa para cifrar sesiones y contraseñas. EN ENTORNO DE PRODUCCION REAL DEBERÍA ETSAR OCULTA
-SECRET_KEY = 'django-insecure-4(e6z4tcwxqt+9jfwgpjaqj#!t896d5*$+ton*41id$*v=ie$_'
+SECRET_KEY = os.getenv('SECRET_KEY', 'clave_de_respaldo_dev')
 
 #Django muestra los errores en pantalla. EN ENTORNO DE PRODUCCION REAL DEBERÍA ETSAR EN FALSE
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 #lista de dominios que pueden acceder al servidor.
-ALLOWED_HOSTS = ["revline-autos.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 #Estas son las apps que Django carga automáticamente cuando arranca el proyecto
 INSTALLED_APPS = [
@@ -64,7 +67,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'  # Indica el punto de entrada del 
 
 # Define la base de datos del proyecto.
 DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///db.sqlite3') #usa un archivo local
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'))
 }
 
 
