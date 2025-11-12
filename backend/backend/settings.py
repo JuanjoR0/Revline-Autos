@@ -89,7 +89,7 @@ USE_TZ = True    #almacena las fechas en UTC internamente.
 
 STATIC_URL = '/static/'   #ruta donde se sirven archivos CSS, JS, imágenes estáticas.
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
-STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist/assets' ]
+STATICFILES_DIRS = [ BASE_DIR / 'frontend_dist' ]
 
 #Para producción con WhiteNoise (cache busting)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
