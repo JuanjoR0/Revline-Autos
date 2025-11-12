@@ -31,9 +31,10 @@ urlpatterns += static('/assets/', document_root=settings.BASE_DIR / 'frontend_di
 
 # Esta línea es clave para que el frontend React funcione con Django
 # Si la ruta no empieza con /api/, /admin/, /media/, /static/ o /assets/, sirve el index.html del frontend
-urlpatterns += [
-    re_path(
-        r'^(?!api/|admin/|media/|static/|assets/).*$', 
-        TemplateView.as_view(template_name='index.html')
-    ),
-]
+if not settings.DEBUG:
+    urlpatterns += [
+        re_path(
+            r"^(?!api/|admin/|media/|static/|assets/).*",
+            TemplateView.as_view(template_name="index.html"),
+        ),
+    ]

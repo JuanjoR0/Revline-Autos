@@ -3,7 +3,7 @@
 import axios from "axios"; //Importamos la librería Axios, que se usa para hacer llamadas al servidor (API)
 
 export const api = axios.create({
-  baseURL: "https://revline-autos.onrender.com/api/",  //Definidmos la dirección base del backend Django
+  baseURL: `${import.meta.env.VITE_API_URL}/api/`,  //Definidmos la dirección base del backend Django
   withCredentials: true, // Importante para que mande cookies cn cada peticion a la API, aquí ira el tooken de autenticacion
   headers: { //Define los encabezados que van en cada petición. Aquí se especifica que el cuerpo de las peticiones será JSON
     "Content-Type": "application/json",

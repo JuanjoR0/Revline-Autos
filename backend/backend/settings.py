@@ -98,7 +98,7 @@ MEDIA_URL = '/media/'  #ruta para archivos subidos por usuarios.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  #carpeta donde se almacenan esos archivos.
 
 # Carpeta donde Django servirá el build del frontend (Vite), así Django puede servir el frontend y el backend desde el mismo servidor.
-TEMPLATES[0]['DIRS'] = [ BASE_DIR / 'frontend_dist' ]
+TEMPLATES[0]['DIRS'] = [BASE_DIR / 'frontend_dist'] if not DEBUG else []
 
 # Define que los IDs automáticos de los modelos sean tipo BigInteger (más capacidad que el normal).
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
