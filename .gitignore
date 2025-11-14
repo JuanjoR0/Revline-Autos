@@ -16,6 +16,7 @@ frontend/.vite/
 # Sistema
 .DS_Store
 Thumbs.db
+Guia.txt
 
 # VSCode / IDE
 .vscode/

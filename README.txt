@@ -38,7 +38,7 @@ ESTRUCTURA PRINCIPAL:
  └── vite.config.js
 
 
-INSTALACION Y EJECUCON EN LOCAL
+INSTALACION Y EJECUCION EN LOCAL
 
 Backend (Django)
 1. Clonar el repositorio:
@@ -47,11 +47,11 @@ Backend (Django)
    cd backend
 3. Crear entorno virtual e instalar dependencias:
    python -m venv venv
-   source venv/bin/activate  (en Windows: venv\Scripts\activate)
+   venv\Scripts\activate
    pip install -r requirements.txt
 4. Aplicar migraciones y crear superusuario:
    python manage.py migrate
-   python manage.py createsuperuser
+   python manage.py crear_admin
 5. Ejecutar el servidor:
    python manage.py runserver
 
@@ -77,7 +77,7 @@ Cliente:
 
 INSTRUCCIONES DE USO;
 
-Los usuarios cliente pueden acceder libremente a la web de RedLine Autos para navegar por las secciones de inicio,
+Los usuarios cliente pueden acceder libremente a la web de RevLine Autos para navegar por las secciones de inicio,
 tienda y contacto, visualizar vehículos y consultar sus detalles sin necesidad de identificarse.
 No obstante, para poder añadir productos al carrito o realizar pedidos deben registrarse o iniciar sesión. 
 El registro se realiza desde el menú superior, proporcionando nombre, correo y contraseña, y una vez iniciada 
@@ -111,8 +111,8 @@ CONTROL DE ERRORES;
 
 AUTENTICACIÓN;
 - Login/Registro, React envía credenciales a Django por HTTPS.
-- Tokens/Sesión, Django devuelve un token de sesión (JWT) y establece cookies de sesión.
-- Persistimos el estado del usuario en el cliente (localstorage) y enviamos el token en el header (Authorization: Bearer)
+- Tokens/Sesión, Django REST Framework SimpleJWT genera un access token y un refresh token.
+- React guarda el token en localStorage y envia el token en el header (Authorization: Bearer)
 - Logout, limpieza de token/estado en cliente y cierre de sesión en servido
 
 SEGURIDAD;
@@ -133,7 +133,7 @@ MEJORAS UX/UI:
 - Si el stock es 0 se desactiva el boton añadir al carrito.
 - Desde el carrito se puede subir el numero de cantidad en el maximo del stock.
 - Si el usuario inicia sesion se cambia en el header el contenedor de Inicio|Registro por el de usuario (foto perfil, nombre, carrito y cerrar sesion).
-- Si el usuario inicia sesion aparece en el menu del header Mis pediddos.
+- Si el usuario inicia sesion aparece en el menu del header Mis pedidos.
 - Si el usuario cierra sesion la web se refresca y lleva al inicio.
 - Si el usuario realiza un pedido el carrito se vacia.
 - El cliente puede cambiar el estado de su pedido .
@@ -159,11 +159,3 @@ Fuentes para la informacion;
 - Chat GPT
 - GitHub Copilot (extension VS)
 - developer.mozilla.org (para los metodos HTTP Request)
-
-
-## Créditos
-Proyecto desarrollado por Juan José Rodríguez Ortega  
-como Trabajo Final del Máster en Desarrollo Full Stack (2025).
-
-## Licencia
-Uso académico y demostrativo. No comercial.

@@ -4,9 +4,6 @@ email: admin@revlineautos.com
 contraseña: 12345678
 
 --- Clientes ---
-username             email                         contraseña
 
-Juanjo        juanjorodriguez682@gmail.com        ej3@kpYdXGrJ3D4
-David           david@revlineautos.com            !B6Q9tt2YLdLDSv
-Maria           maria@revlineautos.com            !q2T3diJB3xeLMt
-Vendedor1       vendedor1@revlineautos.com          hsdygw7s76
+Email: juanjo@revlineautos.com
+Contraseña: Cliente123
