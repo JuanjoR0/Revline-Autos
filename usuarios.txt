@@ -5,5 +5,5 @@ contraseña: 12345678
 
 --- Clientes ---
 
-Email: juanjo@revlineautos.com
+Email: juanjo@revlineautos.com , cliente1@revlineautos.com
 Contraseña: Cliente123
