@@ -1,6 +1,3 @@
-# Este archivo se generó al volver a ejecutar (python manage.py makemigrations).
-# Django creó automáticamente una nueva migración ya que detectó cambios en los modelos
-
 from django.db import migrations, models
 
 

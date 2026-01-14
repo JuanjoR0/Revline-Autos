@@ -13,9 +13,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function Inicio() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // función para redirigir con el filtro aplicado
   const irATienda = (tipo) => {
     navigate(`/tienda?categoria=${tipo}`);
   };

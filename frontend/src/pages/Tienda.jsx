@@ -6,41 +6,35 @@ import "../styles/tienda.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Tienda() {
-  const [vehiculos, setVehiculos] = useState([]); //Guarda la lista de vehículos que recibe en la peticion al backend
-  const [filtroCategoria, setFiltroCategoria] = useState("todos"); //Guarda la categoría actualmente seleccionada en la tienda.
-  const [busqueda, setBusqueda] = useState(""); //Guarda el texto que el usuario escribe en el buscador
+  const [vehiculos, setVehiculos] = useState([]);
+  const [filtroCategoria, setFiltroCategoria] = useState("todos");
+  const [busqueda, setBusqueda] = useState("");
 
-  //Realizamos peticion GET de los vehículos al backend
   useEffect(() => {
     api
       .get("vehiculos/")
       .then((res) => setVehiculos(res.data))
-      .catch((err) => console.error("Error al cargar vehículos:", err));
+      .catch((err) => console.error("Error al cargar vehiculos:", err));
   }, []);
 
-  // Creamos funcion que nos devuelva un array de vehiculos filtrados por (categoría + búsqueda)
   const vehiculosFiltrados = vehiculos.filter((v) => {
     const normalize = (str) =>
       (str || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-    // Mapa entre el botón del submenú y el valor que llega en v.tipo desde Django
     const mapaCategorias = {
-      todos: null,        
+      todos: null,
       turismos: "coche",
       motos: "moto",
       especiales: "especial",
     };
 
     const tipoSeleccionado = mapaCategorias[filtroCategoria];
-
-    // Coincidencia de categoría (si hay tipo seleccionado)
     const coincideCategoria = !tipoSeleccionado || normalize(v.tipo) === normalize(tipoSeleccionado);
 
-    // Coincidencia de búsqueda (nombre, marca o tipo)
     const q = normalize(busqueda);
-    const coincideBusqueda = !q ||normalize(v.nombre).includes(q) ||normalize(v.marca).includes(q) ||normalize(v.tipo).includes(q);
+    const coincideBusqueda = !q || normalize(v.nombre).includes(q) || normalize(v.marca).includes(q) || normalize(v.tipo).includes(q);
 
-    return coincideCategoria && coincideBusqueda; //si cumple ambas condiciones, el vehiculo se incluye en el resultado
+    return coincideCategoria && coincideBusqueda;
   });
 
   const [filtro, setFiltro] = useState("todos");
@@ -48,12 +42,11 @@ export default function Tienda() {
   const params = new URLSearchParams(location.search);
   const categoriaURL = params.get("categoria");
 
-  useEffect(() => { // aquí llamas a la función de navegar a la seccion con filtro de categoria
+  useEffect(() => {
     if (categoriaURL) {
       setFiltro(categoriaURL.toLowerCase());
     }
   }, [categoriaURL]);
-
 
   return (
     <div className="tienda-fondo">
@@ -72,7 +65,7 @@ export default function Tienda() {
             </div>
 
             <div className="buscador">
-              <input type="text" placeholder="Buscar vehículo..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
+              <input type="text" placeholder="Buscar vehiculo..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
             </div>
           </div>
 
@@ -108,4 +101,3 @@ export default function Tienda() {
     </div>
   );
 }
-

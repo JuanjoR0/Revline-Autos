@@ -1,4 +1,4 @@
-# Creamos automaticamente datos predeterminados en la bd
+# Datos de demo para la base de datos
 
 import os
 from decimal import Decimal
@@ -8,7 +8,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
 
-from tienda.models import Usuario, Vehiculo, Pedido, DetallePedido 
+from tienda.models import Usuario, Vehiculo, Pedido, DetallePedido
 
 
 def crear_usuarios_demo():
@@ -40,13 +40,11 @@ def crear_usuarios_demo():
 
 
 def crear_vehiculos_demo():
-    # Si ya hay vehículos, no tocamos nada
     if Vehiculo.objects.exists():
-        print("[seed] Ya existen vehículos en la BD, no se insertan de nuevo.")
+        print("[seed] Ya existen vehiculos en la BD, no se insertan de nuevo.")
         return
 
     vehiculos = [
-        # 8 TURISMOS (coche)
         {
             "nombre": "Elegy Retro",
             "marca": "Annis",
@@ -135,8 +133,6 @@ def crear_vehiculos_demo():
             "aceleracion": Decimal("60"),
             "traccion": Decimal("70"),
         },
-
-        # 6 MOTOS (moto)
         {
             "nombre": "Bati 801",
             "marca": "Pegassi",
@@ -203,8 +199,6 @@ def crear_vehiculos_demo():
             "aceleracion": Decimal("83"),
             "traccion": Decimal("80"),
         },
-
-        # 4 ESPECIALES (especial)
         {
             "nombre": "Oppressor Mk II",
             "marca": "Pegassi",
@@ -253,30 +247,27 @@ def crear_vehiculos_demo():
 
     for data in vehiculos:
         v = Vehiculo.objects.create(**data)
-        print(f"[seed] Vehículo creado: {v.marca} {v.nombre}")
+        print(f"[seed] Vehiculo creado: {v.marca} {v.nombre}")
 
-    print(f"[seed] Insertados {len(vehiculos)} vehículos de demo.")
+    print(f"[seed] Insertados {len(vehiculos)} vehiculos de demo.")
 
 
 def crear_pedidos_demo():
-    # Recuperamos los usuarios
     usuarios = Usuario.objects.filter(
         email__in=["juanjo@revlineautos.com", "cliente1@revlineautos.com"]
     )
 
     if not Vehiculo.objects.exists():
-        print("[seed] No hay vehículos, no se pueden crear pedidos.")
+        print("[seed] No hay vehiculos, no se pueden crear pedidos.")
         return
 
     vehiculos = list(Vehiculo.objects.all())
 
     for user in usuarios:
-        # Si ya tiene pedidos, no creamos más
         if Pedido.objects.filter(usuario=user).exists():
             print(f"[seed] El usuario {user.email} ya tiene pedidos, no se crean de nuevo.")
             continue
 
-        # Pedido 1
         pedido1 = Pedido.objects.create(
             usuario=user,
             direccion="Calle Demo 1",
@@ -300,7 +291,6 @@ def crear_pedidos_demo():
             precio_unitario=vehiculos[1].precio,
         )
 
-        # Pedido 2
         pedido2 = Pedido.objects.create(
             usuario=user,
             direccion="Avenida Eclipse 99",

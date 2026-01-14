@@ -1,6 +1,3 @@
-# Este archivo es una migración generada automáticamente por Django al ejecutar "python manage.py makemigrations", "python manage.py migrate"
-# su función es crear las tablas de la base de datos según los modelos definidos
-
 import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.db.models.deletion
