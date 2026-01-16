@@ -39,7 +39,8 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   justify-content: center;
-  align-items: start;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
@@ -61,11 +62,11 @@
   border: 1px solid #1f1f1f;
   border-radius: 16px;
   overflow: hidden;
-  width: 310px;
+  width: 100%;
+  min-height: 430px;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   border-bottom-right-radius: 10px;
@@ -75,17 +76,23 @@
   position: relative;
   padding: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
   background: radial-gradient(circle at top, #151515 0%, #0c0c0c 100%);
 }
 
 .vehiculo-imagen {
-  width: 220px;
-  height: 120px;
-  object-fit: cover;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: contain;
   border-radius: 10px;
   filter: brightness(1.1) contrast(1.05);
   transition: transform 0.3s ease, filter 0.3s ease;
-  margin-top: 40px;
+  padding: 8px;
 }
 
 .tarjeta-vehiculo:hover .vehiculo-imagen {
@@ -94,8 +101,12 @@
 }
 
 .vehiculo-info {
-  margin-top: 0.8rem;
+  margin-top: 0.4rem;
   text-align: center;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vehiculo-nombre {
@@ -103,6 +114,11 @@
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.2rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .vehiculo-marca {
@@ -277,11 +293,9 @@
   }
   .tienda-grid {
     max-width: 1200px;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
-  .tarjeta-vehiculo {
-    width: 280px;
-  }
+  .tarjeta-vehiculo { min-height: 410px; }
 }
 
 @media (max-width: 1300px) {
@@ -290,11 +304,9 @@
   }
   .tienda-grid {
     max-width: 1000px;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
-  .tarjeta-vehiculo {
-    width: 300px;
-  }
+  .tarjeta-vehiculo { min-height: 400px; }
 }
 
 @media (max-width: 1100px) {
@@ -303,17 +315,14 @@
   }
   .tienda-grid {
     max-width: 780px;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
-  .tarjeta-vehiculo {
-    width: 240px;
-  }
+  .tarjeta-vehiculo { min-height: 370px; }
   .stat-label {
     font-size: 0.7rem;
   }
   .vehiculo-imagen {
-    width: 170px;
-    height: 80px;
+    max-width: 180px;
   }
   .vehiculo-nombre {
     font-size: 1rem;
@@ -327,9 +336,7 @@
   .tienda-grid {
     max-width: 600px;
   }
-  .tarjeta-vehiculo {
-    width: 280px;
-  }
+  .tarjeta-vehiculo { min-height: 350px; }
   .stat-label {
     font-size: 0.8rem;
   }
@@ -356,12 +363,9 @@
     max-width: 480px;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-  .tarjeta-vehiculo {
-    width: 220px;
-  }
+  .tarjeta-vehiculo { min-height: 320px; }
   .vehiculo-imagen {
-    width: 120px;
-    height: 60px;
+    max-width: 140px;
   }
   .vehiculo-stock {
     font-size: 0.5rem;
@@ -391,12 +395,9 @@
     max-width: 380px;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
-  .tarjeta-vehiculo {
-    width: 175px;
-  }
+  .tarjeta-vehiculo { min-height: 300px; }
   .vehiculo-imagen {
-    width: 110px;
-    height: 50px;
+    max-width: 120px;
   }
   .precio {
     font-size: 0.6rem;
@@ -413,7 +414,7 @@
     gap: 0.2rem;
   }
   .barra {
-    margin-left: 0 rem;
+    margin-left: 0;
     height: 6px;
   }
   .tarjeta-footer {
